@@ -1,0 +1,12 @@
+carstatusmonitor\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
+carstatusmonitor\list.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+carstatusmonitor\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+carstatusmonitor\list.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+carstatusmonitor\list.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+carstatusmonitor\list.o: ../Inc/FreeRTOSConfig.h
+carstatusmonitor\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+carstatusmonitor\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+carstatusmonitor\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+carstatusmonitor\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+carstatusmonitor\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+carstatusmonitor\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h

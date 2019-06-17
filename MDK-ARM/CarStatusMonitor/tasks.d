@@ -1,0 +1,16 @@
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c
+carstatusmonitor\tasks.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+carstatusmonitor\tasks.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+carstatusmonitor\tasks.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+carstatusmonitor\tasks.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+carstatusmonitor\tasks.o: ../Inc/FreeRTOSConfig.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+carstatusmonitor\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/StackMacros.h
