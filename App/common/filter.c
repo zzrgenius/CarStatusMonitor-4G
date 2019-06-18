@@ -45,7 +45,7 @@
 ** ------------------------------------------------------------------- */
 #include "main.h"
 #include "filter.h"
-#include "math_helper.h"
+//#include "math_helper.h"
 /* ----------------------------------------------------------------------
 ** Macro Defines
 ** ------------------------------------------------------------------- */
@@ -56,18 +56,18 @@
  * The input signal and reference output (computed with MATLAB)
  * are defined externally in arm_fir_lpf_data.c.
  * ------------------------------------------------------------------- */
-  float32_t Mpu_Input_20HZ[MPU_FILTER_LENGTH];
+  //float32_t Mpu_Input_20HZ[MPU_FILTER_LENGTH];
 /* -------------------------------------------------------------------
  * Declare Test output buffer
  * ------------------------------------------------------------------- */
-static float32_t FilterOutput[MPU_FILTER_LENGTH];
+//static float32_t FilterOutput[MPU_FILTER_LENGTH];
 /* -------------------------------------------------------------------
  * Declare State buffer of size (numTaps + blockSize - 1)
  * ------------------------------------------------------------------- */
-static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1];
+//static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1];
 
 
-static arm_fir_instance_f32 mpu_firS;
+//static arm_fir_instance_f32 mpu_firS;
 /* ----------------------------------------------------------------------
 ** FIR Coefficients buffer generated using fir1() MATLAB function.
 ** fir1(28, 6/24)
@@ -82,9 +82,9 @@ static arm_fir_instance_f32 mpu_firS;
 //  -0.0019f, 0.0052f,-0.0035f, -0.0164f,0.0409f, -0.0119f, -0.1115f,0.2739f, 
 //  0.6505f, 0.2739f, -0.1115f, -0.0119f,0.0409f, -0.0164f, -0.0035f, 0.0052f, -0.0019f
 //};
- const float32_t firCoeffs32[NUM_TAPS] = { 
-	 -0.0020f,  -0.0009f,    0.0038f,    0.0178f,    0.0445f,    0.0817f,    0.1214f,    0.1519f,    0.1634f,    0.1519f,    0.1214f,    0.0817f, 
-	 0.0445f,    0.0178f,    0.0038f,   -0.0009f,   -0.0020f};
+// const float32_t firCoeffs32[NUM_TAPS] = { 
+//	 -0.0020f,  -0.0009f,    0.0038f,    0.0178f,    0.0445f,    0.0817f,    0.1214f,    0.1519f,    0.1634f,    0.1519f,    0.1214f,    0.0817f, 
+//	 0.0445f,    0.0178f,    0.0038f,   -0.0009f,   -0.0020f};
 //const float32_t firCoeffs32[NUM_TAPS] = {
 //    -0.003062003292f,-0.005031108391f,-0.006772691384f,2.870123165e-18f,  0.02554769814f,
 //    0.07308331877f,   0.1324728429f,   0.1826158166f,   0.2022922337f,   0.1826158166f,
@@ -95,39 +95,39 @@ static arm_fir_instance_f32 mpu_firS;
 /* ------------------------------------------------------------------
  * Global variables for FIR LPF Example
  * ------------------------------------------------------------------- */
-uint32_t blockSize = BLOCK_SIZE;
-uint32_t numBlocks = MPU_FILTER_LENGTH/BLOCK_SIZE;
-	 float32_t acc_zthreshold = LIMITED_AM;
- /* ----------------------------------------------------------------------
- * FIR LPF Example
- * ------------------------------------------------------------------- */
-int32_t mpu_acc_filter(void)
-{
-  uint32_t i;
-   float32_t  *inputF32, *outputF32;
-  /* Initialize input and output buffer pointers */
-  inputF32 = &Mpu_Input_20HZ[0];
-  outputF32 = &FilterOutput[0];
-    /* ----------------------------------------------------------------------
-  ** Call the FIR process function for every blockSize samples
-  ** ------------------------------------------------------------------- */
-  for(i=0; i < numBlocks; i++)
-  {
-    arm_fir_f32(&mpu_firS, inputF32 + (i * blockSize), outputF32 + (i * blockSize), blockSize);
-	  
-  }
-  for(i=0;i<MPU_FILTER_LENGTH;i++)
-  {
-	  printf(" %7.5f ",FilterOutput[i]);
-  }
-  printf("\r\n");
-  return 0;
-}
-void mpu_filter_init(void)
-{
-	arm_fir_init_f32(&mpu_firS, NUM_TAPS, (float32_t *)&firCoeffs32[0], &firStateF32[0], blockSize);
+//uint32_t blockSize = BLOCK_SIZE;
+//uint32_t numBlocks = MPU_FILTER_LENGTH/BLOCK_SIZE;
+float32_t acc_zthreshold = LIMITED_AM;
+// /* ----------------------------------------------------------------------
+// * FIR LPF Example
+// * ------------------------------------------------------------------- */
+//int32_t mpu_acc_filter(void)
+//{
+//  uint32_t i;
+//   float32_t  *inputF32, *outputF32;
+//  /* Initialize input and output buffer pointers */
+//  inputF32 = &Mpu_Input_20HZ[0];
+//  outputF32 = &FilterOutput[0];
+//    /* ----------------------------------------------------------------------
+//  ** Call the FIR process function for every blockSize samples
+//  ** ------------------------------------------------------------------- */
+//  for(i=0; i < numBlocks; i++)
+//  {
+//    arm_fir_f32(&mpu_firS, inputF32 + (i * blockSize), outputF32 + (i * blockSize), blockSize);
+//	  
+//  }
+//  for(i=0;i<MPU_FILTER_LENGTH;i++)
+//  {
+//	  printf(" %7.5f ",FilterOutput[i]);
+//  }
+//  printf("\r\n");
+//  return 0;
+//}
+//void mpu_filter_init(void)
+//{
+//	arm_fir_init_f32(&mpu_firS, NUM_TAPS, (float32_t *)&firCoeffs32[0], &firStateF32[0], blockSize);
 
-}
+//}
   float32_t filter_average(float32_t sam)             //¾ùÖµÂË²¨
 {
     static float32_t buf_va[4];

@@ -31,7 +31,7 @@
 #include "mav_msg.h"
 #include "filter.h"
 
-extern IWDG_HandleTypeDef hiwdg;
+//extern IWDG_HandleTypeDef hiwdg;
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -927,7 +927,7 @@ int mpu_main(void)
     int new_data = 0;
  
     get_tick_count(&timestamp);
-		HAL_IWDG_Refresh(&hiwdg);
+//		HAL_IWDG_Refresh(&hiwdg);
 #ifdef COMPASS_ENABLED
         /* We're not using a data ready interrupt for the compass, so we'll
          * make our compass reads timer-based instead.
@@ -1100,8 +1100,7 @@ int mpu_main(void)
 //			 
 //			}
 	
-			//alram_acc(average_out);
-			alram_acc(alram_flag); 
+//			alram_acc(alram_flag); 
 			
 			if((timestamp > (alarm_ticks+3000) ) && (alram_flag == 1))
 			{
@@ -1138,16 +1137,16 @@ static void SetAll_IMUdata(void )
 
 	 
 }
-void alram_acc(uint8_t flag)
-{
+//void alram_acc(uint8_t flag)
+//{
 
-	if(flag)
-	{
-		 
-		LED_Toggle(LED3);
-		//	
-		HAL_GPIO_WritePin( V_ALARM_GPIO_Port, V_ALARM_Pin, GPIO_PIN_RESET );						
-	}
-	else
-		HAL_GPIO_WritePin( V_ALARM_GPIO_Port, V_ALARM_Pin,  GPIO_PIN_SET);
-}
+//	if(flag)
+//	{
+//		 
+//		LED_Toggle(LED3);
+//		//	
+//		HAL_GPIO_WritePin( V_ALARM_GPIO_Port, V_ALARM_Pin, GPIO_PIN_RESET );						
+//	}
+//	else
+//		HAL_GPIO_WritePin( V_ALARM_GPIO_Port, V_ALARM_Pin,  GPIO_PIN_SET);
+//}

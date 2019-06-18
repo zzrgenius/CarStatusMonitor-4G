@@ -215,7 +215,7 @@ void mavlink_cmdack_handle(mavlink_command_ack_t *cmd_ack)
 	switch(cmd_ack->command)
 	{
 		case MAV_CMD_REQUEST_MESSAGE:
-			upload_imubuf_toflash(1);
+			//upload_imubuf_toflash(1);
 			break;
 		case MAV_CMD_SET_MESSAGE_INTERVAL :
 			//Set to -1 to disable and 0 to request default rate

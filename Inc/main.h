@@ -86,6 +86,13 @@
 
 /* USER CODE BEGIN Private defines */
 #define USE_OS 1
+#define LONG_TIME			0xffff 
+#define LIMITED_AM				4.81f
+
+#define BCD2BIN(n)		(((((n) >> 4) & 0x0F) * 10) + ((n) & 0x0F))
+#define BIN2BCD(n)		((((n) / 10) << 4) | ((n) % 10))
+
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
