@@ -62,18 +62,20 @@
 
 #define SD_DEC_Pin GPIO_PIN_13
 #define SD_DEC_GPIO_Port GPIOC
+#define RS485_DE_Pin GPIO_PIN_1
+#define RS485_DE_GPIO_Port GPIOB
 #define SIM_POWER_EN_Pin GPIO_PIN_9
 #define SIM_POWER_EN_GPIO_Port GPIOE
 #define GPS_POWER_EN_Pin GPIO_PIN_10
 #define GPS_POWER_EN_GPIO_Port GPIOE
-#define LED0_Pin GPIO_PIN_12
-#define LED0_GPIO_Port GPIOE
-#define LED1_Pin GPIO_PIN_13
+#define LED1_Pin GPIO_PIN_12
 #define LED1_GPIO_Port GPIOE
-#define LED2_Pin GPIO_PIN_14
+#define LED2_Pin GPIO_PIN_13
 #define LED2_GPIO_Port GPIOE
-#define LED3_Pin GPIO_PIN_15
+#define LED3_Pin GPIO_PIN_14
 #define LED3_GPIO_Port GPIOE
+#define LED4_Pin GPIO_PIN_15
+#define LED4_GPIO_Port GPIOE
 
 /* ########################## Assert Selection ############################## */
 /**
@@ -83,7 +85,7 @@
 /* #define USE_FULL_ASSERT    1U */
 
 /* USER CODE BEGIN Private defines */
-//#define USE_RTOS 1
+#define USE_OS 1
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

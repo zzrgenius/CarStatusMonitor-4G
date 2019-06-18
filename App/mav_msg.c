@@ -16,23 +16,7 @@ mavlink_raw_imu_t g_raw_imu,test_raw_imu;
 
 //extern RTC_TimeTypeDef TimeToUpdate;
 //extern RTC_DateTypeDef DateToUpdate;
-
- /************
-
-	uint16_t checksum;      ///< sent at end of packet
-	uint8_t magic;          ///< protocol magic marker
-	uint8_t len;            ///< Length of payload
-	uint8_t incompat_flags; ///< flags that must be understood
-	uint8_t compat_flags;   ///< flags that can be ignored if not understood
-	uint8_t seq;            ///< Sequence of packet
-	uint8_t sysid;          ///< ID of message sender system/aircraft
-	uint8_t compid;         ///< ID of the message sender component
-	uint32_t msgid:24;      ///< ID of message in payload
-	uint64_t payload64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8];
-	uint8_t ck[2];          ///< incoming checksum bytes
-	uint8_t signature[MAVLINK_SIGNATURE_BLOCK_LEN];
-	
-***///////
+ 
 
 void mav_send_paramset_test(void)
 {
@@ -93,7 +77,7 @@ void mav_send_imu_msg(int16_t xacc ,int16_t yacc ,int16_t zacc,
 	g_raw_imu.ymag = ymag;
 	g_raw_imu.xacc = zmag;
 	mavlink_msg_raw_imu_encode(MAV_SYSTEM_ID,MAV_COMP_ID_IMU,&mav_message,&g_raw_imu);
-	save_imubuf_toflash(&g_raw_imu);
+	//save_imubuf_toflash(&g_raw_imu);
 	//load_imubuf_toflash(&test_raw_imu);
 	//printf("\r\nsize of raw struct is %d\r\n",sizeof(g_raw_imu));
 	//mavlink_msg_raw_imu_pack(MAV_SYSTEM_ID,MAV_COMP_ID_IMU,&mav_message,(uint64_t)(utc_time*1000),  xacc ,  yacc ,  zacc,xgyro ,  ygyro,  zgyro,xmag  ,  ymag ,  zmag);
@@ -134,7 +118,7 @@ void mavlink_param_ext_set_handle(mavlink_param_ext_set_t *param_ext)
 2	PARAM_ACK_FAILED	 
 3	PARAM_ACK_IN_PROGRESS 
  
-//*/
+*/
 	mavlink_param_ext_ack_t t_param_ext_ack;
 	memcpy(t_param_ext_ack.param_id,param_ext->param_id,16);
 	memcpy(t_param_ext_ack.param_value,param_ext->param_value,128);

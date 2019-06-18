@@ -39,12 +39,12 @@
  * ENV version number defined by user.
  * Please change it when your firmware add a new ENV to default_env_set.
  */
-#define EF_ENV_VER_NUM            /* @note you must define it for a value, such as 0 */
+#define EF_ENV_VER_NUM           2  /* @note you must define it for a value, such as 0 */
 #endif /* EF_USING_ENV */
 
 /* using IAP function */
 /* #define EF_USING_IAP */
-#define EF_USING_IAP
+//#define EF_USING_IAP
 /* using save log function */
 /* #define EF_USING_LOG */
 

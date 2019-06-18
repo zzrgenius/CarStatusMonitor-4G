@@ -2,7 +2,7 @@
 #define __MAV_MSG_H
 
 #include "mavlink.h"
-#include "packet.h"
+//#include "packet.h"
 #include "mavlink_msg_command_ack.h"
 //typedef enum {
 //    PACKET_DATA_ACCEL = 0,

@@ -10,9 +10,9 @@ extern "C" {
 #endif
 
 typedef struct {
-    uint16_t sender_pid;    /**< PID of sending thread. Will be filled in by msg_send. */
     uint16_t type;              /**< Type field. */
-        void *ptr;              /**< Pointer content field. */
+	uint16_t length;				// rec data length
+    void *ptr;              /**< Pointer content field. */
 } msg_t;
 
 

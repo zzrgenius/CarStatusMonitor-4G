@@ -20,7 +20,7 @@
 #include "bsp_serial.h"
 #include "bsp_rs485.h"
 #include "msg.h"
-#if USE_RTOS
+#if USE_OS
  #include "FreeRTOS.h"
 #include "task.h"
 #include "cmsis_os.h"
@@ -35,9 +35,9 @@
 #endif
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-#if USE_RTOS
+#if USE_OS
 
-QueueHandle_t xMSG_RX_Queue;
+QueueHandle_t x_msg_rec_Queue;
 SemaphoreHandle_t xPrintfSemaphore = NULL;
 #endif
 
@@ -45,8 +45,11 @@ SemaphoreHandle_t xPrintfSemaphore = NULL;
 //MSG_TypeDef Msg_debug;
  uint8_t usart1_rx_buf[USART_BUF_SIZE];
  
+ uint8_t usart4_rx_buf[USART_BUF_SIZE];
+
  extern UART_HandleTypeDef huart1;
-  extern UART_HandleTypeDef huart2;
+ extern UART_HandleTypeDef huart2;
+ extern UART_HandleTypeDef huart4;
 
  
 /* Private function prototypes -----------------------------------------------*/
@@ -60,9 +63,9 @@ SemaphoreHandle_t xPrintfSemaphore = NULL;
   */
 void bsp_serial_config(void)
 {
-	#if USE_RTOS
+	#if USE_OS
 
-	xMSG_RX_Queue	= xQueueCreate(4,sizeof(MSG_TypeDef));
+	x_msg_rec_Queue	= xQueueCreate(4,sizeof(msg_t));
 	xPrintfSemaphore = xSemaphoreCreateBinary();
 	if( xPrintfSemaphore == NULL )
    {
@@ -74,7 +77,7 @@ void bsp_serial_config(void)
  	   xSemaphoreGive(xPrintfSemaphore);
    }
        
-	if( xMSG_RX_Queue == NULL )
+	if( x_msg_rec_Queue == NULL )
     {
         /* Failed to create the queue. */
 		#if DEBUG
@@ -85,10 +88,10 @@ void bsp_serial_config(void)
 		__HAL_UART_CLEAR_IDLEFLAG(&huart1);
 		__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 		HAL_UART_Receive_DMA(&huart1,usart1_rx_buf,USART_BUF_SIZE);
-	
-//		__HAL_UART_CLEAR_IT(&huart3,UART_CLEAR_IDLEF);
-//	__HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);
-//	HAL_UART_Receive_DMA(&huart3,usart3_rx_buf,USART_BUF_SIZE);
+
+		__HAL_UART_CLEAR_IDLEFLAG(&huart4);
+		__HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);
+		HAL_UART_Receive_DMA(&huart4,usart4_rx_buf,USART_BUF_SIZE);
 	
 //	__HAL_UART_CLEAR_IT(&hlpuart1,UART_CLEAR_IDLEF);
 //	__HAL_UART_ENABLE_IT(&hlpuart1, UART_IT_IDLE);
@@ -138,7 +141,7 @@ void HAL_USART_RXT_IDLE_Handle(UART_HandleTypeDef *huart)
 	uint16_t wlength = 0;
 	uint32_t temp; 
 	SerialDataBuf_TypeDef tSerialBuf;
-	#if USE_RTOS
+	#if USE_OS
 
 	static portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 	#endif
@@ -162,8 +165,8 @@ void HAL_USART_RXT_IDLE_Handle(UART_HandleTypeDef *huart)
 		tSerialBuf.data_len = wlength;
 		memcpy(tSerialBuf.data_buf,usart1_rx_buf,wlength);
 		HAL_UART_Receive_DMA(&huart1,usart1_rx_buf,USART_BUF_SIZE);
-		#if USE_RTOS
-		xQueueSendFromISR( xMSG_RX_Queue,( void * ) &tMsg, &xHigherPriorityTaskWoken );
+		#if USE_OS
+//		xQueueSendFromISR( xMSG_RX_Queue,( void * ) &tMsg, &xHigherPriorityTaskWoken );
 		#endif				
 
 	}
@@ -180,7 +183,7 @@ void HAL_USART_RXT_IDLE_Handle(UART_HandleTypeDef *huart)
 	 
 	 
 
-#if USE_RTOS
+#if USE_OS
 		portEND_SWITCHING_ISR( xHigherPriorityTaskWoken );
 		#endif
 	}
@@ -199,7 +202,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 //		//xQueueSendFromISR(g_GPSDataProcQueue,( void * )usart3_rx_buf , &xHigherPriorityTaskWoken );
 //		//__HAL_DMA_DISABLE_IT(huart3.hdmarx, (DMA_IT_TC | DMA_IT_TE));		
 //  	}
-#if USE_RTOS
+#if USE_OS
 	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 	#endif
 		
@@ -209,6 +212,10 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
 	    uint8_t i = 0;
 	
+	
+	      __HAL_UART_CLEAR_NEFLAG(huart);
+        __HAL_UART_CLEAR_FEFLAG(huart);
+        __HAL_UART_CLEAR_OREFLAG(huart);
 	if((__HAL_UART_GET_FLAG(huart,UART_FLAG_ORE) != RESET))  
 	{
 //		__HAL_UART_CLEAR_IT(huart,UART_CLEAR_OREF);

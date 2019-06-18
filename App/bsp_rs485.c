@@ -20,10 +20,9 @@
 #include "gpio.h"
 #include "bsp_rs485.h"
 #include "bsp_led.h"
-#include "r_message.h"
 #include "mav_msg.h"
-#if USE_RTOS
- #include "FreeRTOS.h"
+#if USE_OS
+#include "FreeRTOS.h"
 #include "task.h"
 #include "cmsis_os.h"
 #include "semphr.h"
@@ -31,7 +30,6 @@
 #endif
 /* Private typedef -----------------------------------------------------------*/
 extern UART_HandleTypeDef huart2;
-extern message_t g_rx_message;
 
 /* Private define ------------------------------------------------------------*/
 #define RS485_UART_HANDLE  huart2
@@ -78,34 +76,17 @@ void rs485_sendstring(char *strbuf)
 uint8_t rs485_rx_msg_handle(uint16_t wlen,uint8_t *data_buf)
 {
 	uint8_t *pData = data_buf;
-	message_t *p_msg;
+	
 	uint16_t t_wlength;
 	 
 	while(t_wlength--)
 	{
-		mav_revmsg(*data_buf++  );
+		mav_revmsg(*pData++  );
 
-//		if(*pData++ == 0xE0)
-//		{
-//			if(*pData == 0xF0)
-//			{
-//				p_msg = (message_t *)(pData-3);
-//				memcpy((uint8_t*)&g_rx_message,(uint8_t*)p_msg,MESSAGE_HEADER_SIZE);
-//				if(message_check_headersum(&g_rx_message) != 0)
-//					return 	MESSAGE_HEADER_ERR;
-//				if(g_rx_message.msg_header.length  > 2)
-//				{
-//					memcpy((uint8_t*)&g_rx_message.buf,p_msg->buf,g_rx_message.msg_header.length);
-//					g_rx_message.crc16 = *(uint16_t*)&p_msg->buf[g_rx_message.msg_header.length];
-//					HandleMSG(&g_rx_message);
-//					LED_AllOff();
-//					return MESSAGE_OK;
-//				}
-//			}
-//		}
+ 
 		
 	}
-	return MESSAGE_OK;
+	return 0;
 }
 
 void rs485_rxidle_handle(uint16_t wlen)
