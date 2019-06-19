@@ -467,5 +467,4 @@ static uint32_t ConvertDateToSecond(const uint8_t *date)
 
 	return sencods;
 }
- 
     

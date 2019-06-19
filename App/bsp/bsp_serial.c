@@ -225,11 +225,11 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 	
 }
 #ifdef __GNUC__
-  /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
-     set to 'Yes') calls __io_putchar() */
-  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+/* With GCC, small printf (option LD Linker->Libraries->Small printf
+   set to 'Yes') calls __io_putchar() */
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
 #else
-  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
 #endif /* __GNUC__ */
 /**
   * @brief  Retargets the C library printf function to the USART.
@@ -241,8 +241,7 @@ PUTCHAR_PROTOTYPE
   /* Place your implementation of fputc here */
   /* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
  // HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
-	rs485_rx_disable();
-  HAL_UART_Transmit(&huart2,(uint8_t *)&ch, 1, 0xFFFF);
+  HAL_UART_Transmit(&huart1,(uint8_t *)&ch, 1, 0xFFFF);
   return ch;
 }
 //			if(wlength > 6 )

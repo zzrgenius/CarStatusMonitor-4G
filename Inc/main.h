@@ -88,10 +88,20 @@
 #define USE_OS 1
 #define LONG_TIME			0xffff 
 #define LIMITED_AM				4.81f
+#define USE_FULL_ASSERT
 
 #define BCD2BIN(n)		(((((n) >> 4) & 0x0F) * 10) + ((n) & 0x0F))
 #define BIN2BCD(n)		((((n) / 10) << 4) | ((n) % 10))
+#define RTM_EXPORT(symbol)
+#define RT_ALIGN_DOWN(size, align)      ((size) & ~((align) - 1))
+#define RT_ALIGN_SIZE 4
 
+#define RT_ASSERT(EX)                                                         \
+if (!(EX))                                                                    \
+{                                                                             \
+	_Error_Handler(__FILE__, __LINE__);										  \
+}
+    //rt_assert_handler(#EX, __FUNCTION__, __LINE__);                           
 
 /* USER CODE END Private defines */
 

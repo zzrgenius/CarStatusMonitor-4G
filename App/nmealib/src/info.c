@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "info.h"
+extern void nmea_time_now(nmeaTIME *stm);
 
 void nmea_zero_INFO(nmeaINFO *info)
 {
