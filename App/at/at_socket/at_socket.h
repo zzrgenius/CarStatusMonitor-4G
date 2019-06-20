@@ -11,13 +11,10 @@
 #ifndef __AT_SOCKET_H__
 #define __AT_SOCKET_H__
 
-#include <rtthread.h>
-#include <rtdevice.h>
-#include <rthw.h>
-
-#include <netdb.h>
-#include <sys/socket.h>
-
+ 
+//#include <netdb.h>
+//#include <sys/socket.h>
+#include "main.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -65,7 +62,7 @@ typedef void (* at_socket_callback)(struct at_socket *conn, int event, uint16_t 
 /* AT socket operations function */
 struct at_socket_ops
 {
-    int (*at_connect)(struct at_socket *socket, char *ip, int32_t port, enum at_socket_type type, rt_bool_t is_client);
+    int (*at_connect)(struct at_socket *socket, char *ip, int32_t port, enum at_socket_type type, uint8_t is_client);
     int (*at_closesocket)(struct at_socket *socket);
     int (*at_send)(struct at_socket *socket, const char *buff, size_t bfsz, enum at_socket_type type);
     int (*at_domain_resolve)(const char *name, char ip[16]);

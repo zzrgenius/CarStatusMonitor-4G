@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <rtdevice.h>
+//#include <rtdevice.h>
 
 #ifdef AT_USING_SERVER
 

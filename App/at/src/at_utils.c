@@ -11,9 +11,39 @@
 #include <at.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <stdarg.h>
 static char send_buf[AT_CMD_MAX_LEN];
-static rt_size_t last_cmd_len = 0;
+static size_t last_cmd_len = 0;
+
+
+/**
+ * This function will calculate the tick from millisecond.
+ *
+ * @param ms the specified millisecond
+ *           - Negative Number wait forever
+ *           - Zero not wait
+ *           - Max 0x7fffffff
+ *
+ * @return the calculated tick
+ */
+uint32_t rt_tick_from_millisecond(int32_t ms)
+{
+    uint32_t tick;
+
+    if (ms < 0)
+    {
+        tick = (uint32_t)RT_WAITING_FOREVER;
+    }
+    else
+    {
+        tick = RT_TICK_PER_SECOND * (ms / 1000);
+        tick += (RT_TICK_PER_SECOND * (ms % 1000) + 999) / 1000;
+    }
+    
+    /* return the calculated tick */
+    return tick;
+}
+RTM_EXPORT(rt_tick_from_millisecond);
 
 /**
  * dump hex format data to console device
@@ -22,12 +52,12 @@ static rt_size_t last_cmd_len = 0;
  * @param buf hex buffer
  * @param size buffer size
  */
-void at_print_raw_cmd(const char *name, const char *buf, rt_size_t size)
+void at_print_raw_cmd(const char *name, const char *buf, size_t size)
 {
 #define __is_print(ch)       ((unsigned int)((ch) - ' ') < 127u - ' ')
 #define WIDTH_SIZE           32
 
-    rt_size_t i, j;
+    size_t i, j;
 
     for (i = 0; i < size; i += WIDTH_SIZE)
     {
@@ -59,13 +89,13 @@ void at_print_raw_cmd(const char *name, const char *buf, rt_size_t size)
     }
 }
 
-const char *at_get_last_cmd(rt_size_t *cmd_size)
+const char *at_get_last_cmd(size_t *cmd_size)
 {
     *cmd_size = last_cmd_len;
     return send_buf;
 }
 
-rt_size_t at_vprintf(rt_device_t device, const char *format, va_list args)
+size_t at_vprintf(   const char *format, va_list args)
 {
     last_cmd_len = vsnprintf(send_buf, sizeof(send_buf), format, args);
 
@@ -73,16 +103,17 @@ rt_size_t at_vprintf(rt_device_t device, const char *format, va_list args)
     at_print_raw_cmd("sendline", send_buf, last_cmd_len);
 #endif
 
-    return rt_device_write(device, 0, send_buf, last_cmd_len);
+    return 0;
+//    return rt_device_write(device, 0, send_buf, last_cmd_len);
 }
 
-rt_size_t at_vprintfln(rt_device_t device, const char *format, va_list args)
+size_t at_vprintfln(  const char *format, va_list args)
 {
-    rt_size_t len;
+    size_t len;
 
-    len = at_vprintf(device, format, args);
+    len = at_vprintf( format, args);
 
-    rt_device_write(device, 0, "\r\n", 2);
+  //  rt_device_write(device, 0, "\r\n", 2);
 
     return len + 2;
 }

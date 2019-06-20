@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <sys/time.h>
+#include <time.h>
 
 #include <at_socket.h>
 #include <at_device.h>

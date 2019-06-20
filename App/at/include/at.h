@@ -12,12 +12,14 @@
 #ifndef __AT_H__
 #define __AT_H__
 
-#include <rtthread.h>
+#include "main.h"
+#include "kservice.h"
+#include "cmsis_os.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#define AT_USING_CLIENT
 #define AT_SW_VERSION                  "1.3.0"
 
 #define AT_CMD_NAME_LEN                16
@@ -100,7 +102,7 @@ struct at_server
     rt_bool_t echo_mode;
 
     char recv_buffer[AT_SERVER_RECV_BUFF_LEN];
-    rt_size_t cur_recv_len;
+    size_t cur_recv_len;
     rt_sem_t rx_notice;
     char end_mark[AT_END_MARK_LEN];
 
@@ -125,17 +127,17 @@ struct at_response
     /* response buffer */
     char *buf;
     /* the maximum response buffer size, it set by `at_create_resp()` function */
-    rt_size_t buf_size;
+    size_t buf_size;
     /* the length of current response buffer */
-    rt_size_t buf_len;
+    size_t buf_len;
     /* the number of setting response lines, it set by `at_create_resp()` function
      * == 0: the response data will auto return when received 'OK' or 'ERROR'
      * != 0: the response data will return when received setting lines number data */
-    rt_size_t line_num;
+    size_t line_num;
     /* the count of received response lines */
-    rt_size_t line_counts;
+    size_t line_counts;
     /* the maximum response time */
-    rt_int32_t timeout;
+    int32_t timeout;
 };
 
 typedef struct at_response *at_response_t;
@@ -147,7 +149,7 @@ struct at_urc
 {
     const char *cmd_prefix;
     const char *cmd_suffix;
-    void (*func)(struct at_client *client, const char *data, rt_size_t size);
+    void (*func)(struct at_client *client, const char *data, size_t size);
 };
 typedef struct at_urc *at_urc_t;
 
@@ -160,28 +162,32 @@ typedef struct at_urc *at_urc_table_t;
 
 struct at_client
 {
-    rt_device_t device;
-
+  //  rt_device_t device;
+	uint16_t device;
     at_status_t status;
     char end_sign;
 
     /* the current received one line data buffer */
     char *recv_line_buf;
     /* The length of the currently received one line data */
-    rt_size_t recv_line_len;
+    size_t recv_line_len;
     /* The maximum supported receive data length */
-    rt_size_t recv_bufsz;
-    rt_sem_t rx_notice;
-    rt_mutex_t lock;
+    size_t recv_bufsz;
+  //  rt_sem_t rx_notice;
+   // rt_mutex_t lock;
+	osSemaphoreId rx_notice;
+
+	osMutexId lock;
 
     at_response_t resp;
-    rt_sem_t resp_notice;
+    
+	osSemaphoreId resp_notice;
     at_resp_status_t resp_status;
 
     struct at_urc_table *urc_table;
-    rt_size_t urc_table_size;
+    size_t urc_table_size;
 
-    rt_thread_t parser;
+     osThreadId parser;
 };
 typedef struct at_client *at_client_t;
 #endif /* AT_USING_CLIENT */
@@ -202,7 +208,7 @@ int at_req_parse_args(const char *req_args, const char *req_expr, ...);
 #ifdef AT_USING_CLIENT
 
 /* AT client initialize and start*/
-int at_client_init(const char *dev_name,  rt_size_t recv_bufsz);
+int at_client_init(const char *dev_name,  size_t recv_bufsz);
 
 /* ========================== multiple AT client function ============================ */
 
@@ -211,32 +217,34 @@ at_client_t at_client_get(const char *dev_name);
 at_client_t at_client_get_first(void);
 
 /* AT client wait for connection to external devices. */
-int at_client_obj_wait_connect(at_client_t client, rt_uint32_t timeout);
+int at_client_obj_wait_connect(at_client_t client, uint32_t timeout);
 
 /* AT client send or receive data */
-rt_size_t at_client_obj_send(at_client_t client, const char *buf, rt_size_t size);
-rt_size_t at_client_obj_recv(at_client_t client, char *buf, rt_size_t size, rt_int32_t timeout);
+size_t at_client_obj_send(at_client_t client, const char *buf, size_t size);
+size_t at_client_obj_recv(at_client_t client, char *buf, size_t size, int32_t timeout);
 
 /* set AT client a line end sign */
 void at_obj_set_end_sign(at_client_t client, char ch);
 
 /* Set URC(Unsolicited Result Code) table */
-int at_obj_set_urc_table(at_client_t client, const struct at_urc * table, rt_size_t size);
+int at_obj_set_urc_table(at_client_t client, const struct at_urc * table, size_t size);
 
 /* AT client send commands to AT server and waiter response */
 int at_obj_exec_cmd(at_client_t client, at_response_t resp, const char *cmd_expr, ...);
 
 /* AT response object create and delete */
-at_response_t at_create_resp(rt_size_t buf_size, rt_size_t line_num, rt_int32_t timeout);
+at_response_t at_create_resp(size_t buf_size, size_t line_num, int32_t timeout);
 void at_delete_resp(at_response_t resp);
-at_response_t at_resp_set_info(at_response_t resp, rt_size_t buf_size, rt_size_t line_num, rt_int32_t timeout);
+at_response_t at_resp_set_info(at_response_t resp, size_t buf_size, size_t line_num, int32_t timeout);
 
 /* AT response line buffer get and parse response buffer arguments */
-const char *at_resp_get_line(at_response_t resp, rt_size_t resp_line);
+const char *at_resp_get_line(at_response_t resp, size_t resp_line);
 const char *at_resp_get_line_by_kw(at_response_t resp, const char *keyword);
-int at_resp_parse_line_args(at_response_t resp, rt_size_t resp_line, const char *resp_expr, ...);
+int at_resp_parse_line_args(at_response_t resp, size_t resp_line, const char *resp_expr, ...);
 int at_resp_parse_line_args_by_kw(at_response_t resp, const char *keyword, const char *resp_expr, ...);
 
+
+uint32_t rt_tick_from_millisecond(int32_t ms);
 /* ========================== single AT client function ============================ */
 
 /**
@@ -250,6 +258,13 @@ int at_resp_parse_line_args_by_kw(at_response_t resp, const char *keyword, const
 #define at_client_recv(buf, size, timeout)       at_client_obj_recv(at_client_get_first(), buf, size, timeout)
 #define at_set_end_sign(ch)                      at_obj_set_end_sign(at_client_get_first(), ch)
 #define at_set_urc_table(urc_table, table_sz)    at_obj_set_urc_table(at_client_get_first(), urc_table, table_sz)
+
+
+#define RT_WAITING_FOREVER              -1              /**< Block forever until get resource. */
+#define RT_WAITING_NO                   0               /**< Non-block. */
+#define RT_TICK_PER_SECOND 1000
+
+
 
 #endif /* AT_USING_CLIENT */
 
