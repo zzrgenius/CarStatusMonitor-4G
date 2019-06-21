@@ -36,28 +36,31 @@
 #include "nmea.h"
 #include "bsp_serial.h"
 #include "bsp_led.h"
- 
+#include "gps_cfg.h"
 //#include "gps.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define GPS_BUF_LEN	256
+
 //#define USE_GPS_POWER_SWITCH
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-QueueHandle_t g_GPSDataProcQueue;  
 extern UART_HandleTypeDef huart3;
 
 #define GPS_UART_Handle   huart3
-uint8_t gps_buf[GPS_BUF_LEN];
-
-extern uint8_t usart3_rx_buf[USART_BUF_SIZE];
-
-extern  DMA_HandleTypeDef hdma_usart3_rx; 
-
+ 
+ 
 nmeaINFO info;
 nmeaPARSER parser;
-osSemaphoreId  gpsSemaphoreHandle;
-osSemaphoreDef_t gpsSemaphore;
+ 
+
+//static gpsData_t gpsData;
+static xSemaphoreHandle gps_semaphore = NULL;
+TaskHandle_t taskHandle_GPS;//TASKHANDLE_GPS;
+char gGPSBuf[GPS_MAX_NMEA_SENTENCE];
+uint8_t gps_recdata;
+  
+ 
+ 
 /* Private function prototypes -----------------------------------------------*/
 
 #ifdef USE_GPS_POWER_SWITCH
@@ -73,9 +76,7 @@ void HAL_GpsInit( void )
    //gps_init(&g_hgps);                             /* Init GPS */
     /* Create buffer for received data */
    // gps_buff_init(&hgps_buff, hgps_buff_data, sizeof(hgps_buff_data));
-	osSemaphoreDef(gpsSemaphore);
-	gpsSemaphoreHandle =  osSemaphoreCreate (osSemaphore(gpsSemaphore),  0);
-	
+  	
 //	g_GPSDataProcQueue = xQueueCreate(1,GPS_BUF_LEN); 
 //	if(g_GPSDataProcQueue == NULL)
 //	{
@@ -84,63 +85,56 @@ void HAL_GpsInit( void )
 	#ifdef USE_GPS_POWER_SWITCH
 	enable_gps_power();
 	#endif
-	__HAL_DMA_ENABLE_IT(huart3.hdmarx, (DMA_IT_TC | DMA_IT_TE));
+//	__HAL_DMA_ENABLE_IT(huart3.hdmarx, (DMA_IT_TC | DMA_IT_TE));
 
-	HAL_UART_Receive_DMA(&GPS_UART_Handle,gps_buf,GPS_BUF_LEN);
+//	HAL_UART_Receive_DMA(&GPS_UART_Handle,gps_buf,GPS_BUF_LEN);
+	 
 }
 
-char* gGPSBuf[USART_BUF_SIZE];
 
-  
 void vStartTaskGPS( void *pvParameters )
 {
 	HAL_GpsInit();
 	nmea_zero_INFO(&info);
     nmea_parser_init(&parser);
-
+	 if (!gps_semaphore)
+		vSemaphoreCreateBinary (gps_semaphore);
+	 HAL_UART_Receive_IT(&GPS_UART_Handle,&gps_recdata,1);
+  
 	while(1)
 	{
 			/* See if we can obtain the semaphore.  If the semaphore is not
 			available wait 10 ticks to see if it becomes free. */
 			//if( xSemaphoreTake( xBinarySemGPS, ( TickType_t ) portMAX_DELAY ) == pdTRUE )
-		if(	osSemaphoreWait(gpsSemaphoreHandle,osWaitForever))
+		if(	osSemaphoreWait(gps_semaphore,osWaitForever))
 		     //if( xQueueReceive( g_GPSDataProcQueue, ( gGPSBuf ), ( TickType_t ) 100 ) )
-			{
-				/* We were able to obtain the semaphore and can now access the
-				shared resource. */
-				/* ... */
-				LED_Toggle(LED1);
-				 
-			//	printf("Latitude: %f degrees\r\n", g_hgps.latitude);
-				nmea_parse(&parser,(const char*)gGPSBuf,GPS_BUF_LEN, &info); 
+		{
+			/* We were able to obtain the semaphore and can now access the
+			shared resource. */
+			/* ... */
+			LED_Toggle(LED1);
+			 
+		//	printf("Latitude: %f degrees\r\n", g_hgps.latitude);
+			nmea_parse(&parser,(const char*)gGPSBuf,GPS_MAX_NMEA_SENTENCE, &info); 
 
-				//__HAL_DMA_ENABLE_IT(huart3.hdmarx, (DMA_IT_TC | DMA_IT_TE));
-				HAL_UART_Receive_DMA(&GPS_UART_Handle,gps_buf,GPS_BUF_LEN);
+			//__HAL_DMA_ENABLE_IT(huart3.hdmarx, (DMA_IT_TC | DMA_IT_TE));
+			//HAL_UART_Receive_DMA(&GPS_UART_Handle,gps_buf,GPS_BUF_LEN);
+		
+			osSemaphoreRelease (gps_semaphore);
+
+			/* We have finished accessing the shared resource.  Release the semaphore. */
 			
-				osSemaphoreRelease (gpsSemaphoreHandle);
-
-				/* We have finished accessing the shared resource.  Release the semaphore. */
-				
-			}
+		}
+		else
+		{
+			
+		}
 		 
 		
 	}
 }
 
-#define GPS_MAX_NMEA_SENTENCE 128
 
- 
- 
-
- 
-//
-//
-//
-//static gpsData_t gpsData;
-static xSemaphoreHandle semaphore = NULL;
-TaskHandle_t taskHandle_GPS;//TASKHANDLE_GPS;
- 
- 
  
  
  
@@ -154,9 +148,29 @@ TaskHandle_t taskHandle_GPS;//TASKHANDLE_GPS;
 //      xSemaphoreGive (semaphore);
 //    }
  
+//   static char nmeaSentence [GPS_MAX_NMEA_SENTENCE];
+static unsigned char gpsChecksumNMEA (char *sz)
+{
+  short i;
+  unsigned char cs;
+
+  for (cs = 0, i = 1; sz [i] && sz [i] != '*'; i++)
+    cs ^= ((unsigned char) sz [i]);
+
+  return cs;
+}
+static int hatoi (const char *s)
+{
+  const unsigned char hexToDec [] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 255, 255, 255, 255, 255, 255, 255, 10, 11, 12, 13, 14, 15};
+  int value = 0;
+
+  while (*s && isxdigit (*s))
+    value = (value << 4) | hexToDec [toupper (*s++) - '0'];
+
+  return value;
+}
  
- 
-static int gpsProcessByte (unsigned char c, char *nmeaSentence)
+  int gpsProcessByte (unsigned char c, char *nmeaSentence)
 {
   short complete = 0;
   static short state = 0;
@@ -191,14 +205,23 @@ static int gpsProcessByte (unsigned char c, char *nmeaSentence)
             if ((s = strchr (nmeaSentence, '*')))
             {
               int cksum;
+              if (gpsChecksumNMEA (nmeaSentence) == (cksum = hatoi (s + 1)))
+			  {
+				  //complete = 1;
+				  osSemaphoreRelease (gps_semaphore);
 
-//              if (gpsChecksumNMEA (nmeaSentence) == (cksum = hatoi (s + 1)))
-//                complete = 1;
-//              else
+			  }
+			  else
+			  {
 //                printf ("NMEA checksum error: got 0x%02x, want %s", cksum, s);
+				  
+			  }
             }
             else
-              printf ("NMEA checksum not found: \"%s\"", nmeaSentence);
+			{
+				
+              //printf ("NMEA checksum not found: \"%s\"", nmeaSentence);
+			}
           }
           else if (c != 0x0d)
           {
@@ -214,58 +237,20 @@ static int gpsProcessByte (unsigned char c, char *nmeaSentence)
 
   return (complete);
 }
-
-//
-//  Return 1 if got a copy, 0 if not.
-//
-//int gpsCopyData (gpsData_t *dst)
-//{
-//  if (semaphore && xSemaphoreTake (semaphore, 100 / portTICK_RATE_MS) == pdTRUE)
-//  {
-//    memcpy (dst, &gpsData, sizeof (gpsData_t));
-//    xSemaphoreGive (semaphore);
-//    return 1;
-//  }
-
-//  memset (dst, 0, sizeof (gpsData_t));
-//  return 0;
-//}
-
-//
-//
-//
-static portTASK_FUNCTION (vGPSTask, pvParameters __attribute__ ((unused)))
+ 
+ BaseType_t gpsTaskStart (void)
 {
-  int fd;
-  static char nmeaSentence [GPS_MAX_NMEA_SENTENCE];
+	BaseType_t xReturned;
 
- // memset (&gpsData, 0, sizeof (gpsData));
-
-  if (!semaphore)
-    vSemaphoreCreateBinary (semaphore);
-  
-  
-
-  for (;;)
-  {
-//    portCHAR c;
-
-   // if (read (fd, &c, sizeof (c)) == sizeof (c))
-  //    if (gpsProcessByte (c, nmeaSentence))
-    //    gpsDispatchMessages (nmeaSentence);
-	  
-  }
+   xReturned = xTaskCreate (vStartTaskGPS, "GPSTask", configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1), &taskHandle_GPS);  
+	if( xReturned == pdPASS )
+    {
+        /* The task was created.  Use the task's handle to delete the task. */
+        vTaskDelete( taskHandle_GPS );
+    }
 }
 
-//
-//
-//
-signed portBASE_TYPE gpsTaskStart (void)
-{
-  return xTaskCreate (vGPSTask, "GPSTask", configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1), &taskHandle_GPS);  
-}
-
-signed portBASE_TYPE gpsTaskStop (void)
+BaseType_t gpsTaskStop (void)
 {
  
   

@@ -20,6 +20,7 @@
 #include "bsp_serial.h"
 #include "bsp_rs485.h"
 #include "msg.h"
+#include "gps_cfg.h"
 #if USE_OS
  #include "FreeRTOS.h"
 #include "task.h"
@@ -27,6 +28,7 @@
 #include "semphr.h"
 #include "queue.h"
 #endif
+
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
@@ -51,7 +53,10 @@ SemaphoreHandle_t xPrintfSemaphore = NULL;
  extern UART_HandleTypeDef huart2;
  extern UART_HandleTypeDef huart4;
 
- 
+extern int gpsProcessByte (unsigned char c, char *nmeaSentence);
+extern char gGPSBuf[GPS_MAX_NMEA_SENTENCE];
+extern uint8_t gps_recdata;
+  
 /* Private function prototypes -----------------------------------------------*/
  
 
@@ -192,8 +197,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	#if USE_OS
 	portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 	#endif
-	 
-
+	
+	if(huart->Instance == UART4)
+	{
+		gpsProcessByte(gps_recdata,gGPSBuf);
+	}
 //	if(huart->hdmarx == &hdma_usart3_rx)
 //	{
 //	//	__HAL_DMA_CLEAR_FLAG(huart->hdmarx,DMA_FLAG_TCIF3);  
