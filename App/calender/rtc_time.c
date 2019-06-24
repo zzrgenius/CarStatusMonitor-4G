@@ -337,7 +337,7 @@ void UTC_to_BJtime(nmeaTIME*	utc_time, int8_t	timezone)
 //将localtime（UTC+8北京时间）转为UNIX TIME，以1970年1月1日为起点
 unsigned int  xDate2Seconds(nmeaTIME *time)
 {
-	  static unsigned int  month[12]={
+	  const unsigned int  month[12]={
     /*01月*/xDAY*(0),
     /*02月*/xDAY*(31),
     /*03月*/xDAY*(31+28),
@@ -412,7 +412,7 @@ void xSeconds2Date(unsigned long seconds,nmeaTIME *time )
     ++time->mon;               //调整月 
     time->day = days;           //获得日 
 }
- 
+#if 0
  //UTC（字符串）转UNIX时间
 /*******************************************************************************
 * Function Name  : ConvertTimeToSecond
@@ -467,4 +467,4 @@ static uint32_t ConvertDateToSecond(const uint8_t *date)
 
 	return sencods;
 }
-    
+#endif

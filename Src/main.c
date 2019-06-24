@@ -57,6 +57,7 @@
 #include "fatfs.h"
 #include "i2c.h"
 #include "libjpeg.h"
+#include "mbedtls.h"
 #include "rtc.h"
 #include "sdio.h"
 #include "spi.h"

@@ -81,6 +81,7 @@ void MX_FATFS_Init(void)
 DWORD get_fattime(void)
 {
   /* USER CODE BEGIN get_fattime */
+	
   return 0;
   /* USER CODE END get_fattime */  
 }

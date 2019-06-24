@@ -43,9 +43,7 @@
 /* global errno in RT-Thread */
 static volatile int __rt_errno;
 
-#if defined(RT_USING_DEVICE) && defined(RT_USING_CONSOLE)
-static rt_device_t _console_device = RT_NULL;
-#endif
+ 
 
 /*
  * This function will get errno

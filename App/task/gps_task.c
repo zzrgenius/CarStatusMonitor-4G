@@ -204,7 +204,7 @@ static int hatoi (const char *s)
 
             if ((s = strchr (nmeaSentence, '*')))
             {
-              int cksum;
+               int cksum;
               if (gpsChecksumNMEA (nmeaSentence) == (cksum = hatoi (s + 1)))
 			  {
 				  //complete = 1;

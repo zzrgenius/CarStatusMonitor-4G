@@ -89,6 +89,7 @@ void StartDefaultTask(void const * argument);
 
 extern void MX_FATFS_Init(void);
 extern void MX_LIBJPEG_Init(void);
+extern void MX_MBEDTLS_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* Pre/Post sleep processing prototypes */
@@ -157,6 +158,9 @@ void StartDefaultTask(void const * argument)
 
   /* init code for LIBJPEG */
   MX_LIBJPEG_Init();
+
+  /* Up to user define the empty MX_MBEDTLS_Init() function located in mbedtls.c file */
+  MX_MBEDTLS_Init();
 
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
