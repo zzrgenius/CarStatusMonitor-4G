@@ -1,9 +1,9 @@
 #include "i2c.h"
 #include "bsp_led.h"
 #include "mpu9250_driver.h"
-extern I2C_HandleTypeDef hi2c1;
-#define    I2C_EXPBD_Handle  hi2c1
-#define 	I2C_EXPBD                            I2C1
+extern I2C_HandleTypeDef hi2c2;
+#define    I2C_EXPBD_Handle  hi2c2
+#define 	I2C_EXPBD                            I2C2
 
  static volatile uint32_t TimingDelay=0;
 static uint32_t I2C_EXPBD_Timeout = 0x1000;    /*<! Value of Timeout when I2C communication fails */
@@ -75,7 +75,7 @@ static uint8_t I2C_EXPBD_WriteData( uint8_t Addr, uint8_t Reg,  uint16_t Size, u
  * @retval 0 in case of success
  * @retval 1 in case of failure
  */
-static uint8_t I2C_EXPBD_ReadData( uint8_t Addr, uint8_t Reg,  uint16_t Size,uint8_t* pBuffer )
+static uint8_t I2C_EXPBD_ReadData( uint8_t Addr, uint16_t Reg,  uint16_t Size,uint8_t* pBuffer )
 {
 
   HAL_StatusTypeDef status = HAL_OK;
@@ -162,7 +162,7 @@ unsigned short Get_I2C_Retry()
 
 
  int Sensors_I2C_WriteRegister(unsigned char slave_addr,
-                                        unsigned char reg_addr,
+                                       unsigned char reg_addr,
                                         unsigned short len, 
                                           unsigned char *data_ptr)
 {

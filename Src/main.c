@@ -65,7 +65,7 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "osprintf.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -81,6 +81,7 @@ void MX_FREERTOS_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+extern void HAL_GpsInit( void ); 
 
 /* USER CODE END PFP */
 
@@ -132,6 +133,9 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
+	printf("test usart1\r\n");
+	osprintf_init();
+	HAL_GpsInit( );
 
   /* USER CODE END 2 */
 

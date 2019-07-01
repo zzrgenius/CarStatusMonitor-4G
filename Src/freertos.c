@@ -79,6 +79,7 @@
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
+osThreadId myTaskGPSHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -86,6 +87,7 @@ osThreadId defaultTaskHandle;
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
+extern void StartTaskGPS(void const * argument);
 
 extern void MX_FATFS_Init(void);
 extern void MX_LIBJPEG_Init(void);
@@ -134,6 +136,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of defaultTask */
   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+  /* definition and creation of myTaskGPS */
+  osThreadDef(myTaskGPS, StartTaskGPS, osPriorityNormal, 0, 512);
+  myTaskGPSHandle = osThreadCreate(osThread(myTaskGPS), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

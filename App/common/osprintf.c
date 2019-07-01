@@ -47,10 +47,11 @@
 #include "FreeRTOS.h"
 #include "osprintf.h"
 #include "semphr.h"
-
+#include "stm32f4xx_hal.h"
+#include "bsp_serial.h"
 xSemaphoreHandle trace_lock;
 
-void osprintf_init(void *usart, const void *opt)
+void osprintf_init( void)
 {
 	trace_lock = xSemaphoreCreateMutex();
 //	stdio_serial_init(usart, opt);

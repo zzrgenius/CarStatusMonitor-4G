@@ -52,7 +52,7 @@
           <OutputName>CarStatusMonitor</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>1</CreateHexFile>
+          <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath></ListingPath>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,MPU9250,EMPL,EMPL_TARGET_STM32F4,MPL_LOG_NDEBUG=1, __CC_ARM,__TARGET_FPU_VFP,ARM_MATH_CM4,USE_CAL_HW_REGISTERS,MBEDTLS_CONFIG_FILE=&lt;mbedtls_config.h&gt;,HWREF_B_CELL_BG96_V2</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F; ../Middlewares/Third_Party/LibJPEG/include; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Middlewares/Third_Party/FatFs/src; ../Middlewares/Third_Party/FreeRTOS/Source/include; ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS; ../Drivers/CMSIS/Include; ..\App; ..\App\mavlink; ..\App\libcrc-2.0\include; ..\App\SFUD\inc; ..\App\easyflash\inc; ..\App\calender; ..\App\mpu_core\driver\include; ..\App\mpu_core\mllite; ..\App\mpu_core\eMPL-hal; ..\App\mpu_core\driver\eMPL; ..\App\mpu_core\mpl; ..\App\mpu_core\driver\stm32L; ..\App\common; ..\App\nmealib\include; ..\App\bsp; ..\App\mpu_core; ..\App\log; ..\Cellular\Misc\TraceInterface\inc; ..\project_config\inc; ..\Common_Projects_Files\inc; ..\Cellular\at_service\core\inc; ..\Cellular\at_service\custom\modem_bg96\inc; ..\Cellular\Cellular_Init\inc; ../Middlewares/Third_Party/mbedTLS/include; ../Middlewares/Third_Party/mbedTLS/include/mbedtls; ..\Cellular\net\com\inc; ..\Cellular\net\lwip_porting\ppposif\inc; ..\Cellular\net\nifman\inc; ..\Cellular\Misc\StackAnalysis\inc; ..\Cellular\radio_service\cellular\inc; ..\Cellular\core\ipc\inc; ..\Cellular\core\data_cache\Inc; ..\Cellular\Misc\ErrorHandler\inc; ..\Middlewares\Third_Party\lwip\src\include\netif\ppp; ..\Middlewares\Third_Party\lwip\src\include\; ..\Middlewares\Third_Party\lwip\system\; ..\Cellular\radio_management\inc; ..\Middlewares\Third_Party\lwip\system\arch</IncludePath>
+              <IncludePath>../Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;   ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;   ../Middlewares/Third_Party/LibJPEG/include;   ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;   ../Middlewares/Third_Party/FatFs/src;   ../Middlewares/Third_Party/FreeRTOS/Source/include;   ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;   ../Drivers/CMSIS/Include;   ..\App;   ..\App\mavlink;   ..\App\libcrc-2.0\include;   ..\App\SFUD\inc;   ..\App\easyflash\inc;   ..\App\calender;   ..\App\mpu_core\driver\include;   ..\App\mpu_core\mllite;   ..\App\mpu_core\eMPL-hal;   ..\App\mpu_core\driver\eMPL;   ..\App\mpu_core\mpl;   ..\App\mpu_core\driver\stm32L;   ..\App\common;   ..\App\nmealib\include;   ..\App\bsp;   ..\App\mpu_core;   ..\App\log;   ..\Cellular\Misc\TraceInterface\inc;   ..\project_config\inc;   ..\Common_Projects_Files\inc;   ..\Cellular\at_service\core\inc;   ..\Cellular\at_service\custom\modem_bg96\inc;   ..\Cellular\Cellular_Init\inc;   ../Middlewares/Third_Party/mbedTLS/include;   ../Middlewares/Third_Party/mbedTLS/include/mbedtls;   ..\Cellular\net\com\inc;   ..\Cellular\net\lwip_porting\ppposif\inc;   ..\Cellular\net\nifman\inc;   ..\Cellular\Misc\StackAnalysis\inc;   ..\Cellular\radio_service\cellular\inc;   ..\Cellular\core\ipc\inc;   ..\Cellular\core\data_cache\Inc;   ..\Cellular\Misc\ErrorHandler\inc;   ..\Middlewares\Third_Party\lwip\src\include\netif\ppp;   ..\Middlewares\Third_Party\lwip\src\include\;   ..\Middlewares\Third_Party\lwip\system\;   ..\Cellular\radio_management\inc;   ..\Middlewares\Third_Party\lwip\system\arch;   ..\App\sensors;   ..\App\sensors\embedded-sht\embedded-common;   ..\App\sensors\embedded-sht\sht3x;   ..\App\sensors\embedded-sht\sht-common</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2158,6 +2158,31 @@
               <FileName>nifman.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Cellular\net\nifman\src\nifman.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Sensors</GroupName>
+          <Files>
+            <File>
+              <FileName>sht3x.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\sensors\embedded-sht\sht3x\sht3x.c</FilePath>
+            </File>
+            <File>
+              <FileName>sht3x_example_usage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\sensors\embedded-sht\sht3x\sht3x_example_usage.c</FilePath>
+            </File>
+            <File>
+              <FileName>sensirion_hw_i2c_implementation.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\sensors\embedded-sht\embedded-common\hw_i2c\sample-implementations\STM32F1_series\sensirion_hw_i2c_implementation.c</FilePath>
+            </File>
+            <File>
+              <FileName>sensirion_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\sensors\embedded-sht\embedded-common\sensirion_common.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -46,8 +46,11 @@
 #define OSPRINTF_H_INCLUDED
 
 //#include "compiler.h"
-#include "main.h"
-void osprintf_init(void *usart, const void *opt);
+//#include "main.h"
+#include "stm32f4xx_hal.h"
+
+//void osprintf_init(void *usart, const void *opt);
+void osprintf_init(void);
 void osprintf(const char *fmt, ...) __attribute__ ((format (printf, 1, 0)));
 
 void osprint(const char *s);
