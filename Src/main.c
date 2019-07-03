@@ -86,6 +86,8 @@ extern void HAL_GpsInit( void );
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+extern int SHT_TEST(void) ;
+extern int bmp280_test(void);
 
 /* USER CODE END 0 */
 
@@ -135,6 +137,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	printf("test usart1\r\n");
 	osprintf_init();
+	bmp280_test(); //SHT_TEST();
 	HAL_GpsInit( );
 
   /* USER CODE END 2 */

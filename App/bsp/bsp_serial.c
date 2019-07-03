@@ -204,19 +204,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		
 		 
 }
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
-{
-	    uint8_t i = 0;
-	
-	if((__HAL_UART_GET_FLAG(huart,UART_FLAG_ORE) != RESET))  
-	{
-	//	__HAL_UART_CLEAR_IT(huart,UART_CLEAR_OREF);
-		__HAL_UART_CLEAR_OREFLAG(huart);
-		HAL_UART_Receive(huart,(uint8_t *)&i,1,0xff);
-		
-	}
-	
-}
+ 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
 	    uint8_t i = 0;

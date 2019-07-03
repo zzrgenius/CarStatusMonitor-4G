@@ -33,7 +33,8 @@
  * #include <unistd.h> // sleep
  */
 #include "sht3x.h"
-
+#include <stdio.h>
+#include "stm32f4xx_hal.h"
 /**
  * TO USE CONSOLE OUTPUT (PRINTF) AND WAIT (SLEEP) PLEASE ADAPT THEM TO YOUR
  * PLATFORM
@@ -47,7 +48,7 @@ int SHT_TEST(void) {
      * a sensor.
      */
     while (sht3x_probe() != STATUS_OK) {
-        /* printf("SHT sensor probing failed\n"); */
+         printf("SHT sensor probing failed\n"); 
     }
     /* printf("SHT sensor probing successful\n"); */
 
@@ -58,14 +59,14 @@ int SHT_TEST(void) {
          */
         int8_t ret = sht3x_measure_blocking_read(&temperature, &humidity);
         if (ret == STATUS_OK) {
-            /* printf("measured temperature: %0.2f degreeCelsius, "
+             printf("measured temperature: %0.2f degreeCelsius, "
                       "measured humidity: %0.2f percentRH\n",
                       temperature / 1000.0f,
-                      humidity / 1000.0f); */
+                      humidity / 1000.0f); 
         } else {
             /* printf("error reading measurement\n"); */
         }
-
+		HAL_Delay(10000);
         /* sleep(1); */
     }
     return 0;
