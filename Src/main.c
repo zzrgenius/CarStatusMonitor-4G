@@ -72,6 +72,7 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+#define xConsoleUart  huart1
 
 /* USER CODE END PV */
 
@@ -81,6 +82,7 @@ void MX_FREERTOS_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+
 extern void HAL_GpsInit( void ); 
 
 /* USER CODE END PFP */
@@ -88,6 +90,8 @@ extern void HAL_GpsInit( void );
 /* USER CODE BEGIN 0 */
 extern int SHT_TEST(void) ;
 extern int bmp280_test(void);
+extern void opt_test(void );
+extern int mpu_main(void);
 
 /* USER CODE END 0 */
 
@@ -137,7 +141,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	printf("test usart1\r\n");
 	osprintf_init();
-	bmp280_test(); //SHT_TEST();
+//	mpu_main();// SHT_TEST();// opt_test(  ); 
+//bmp280_test(); //SHT_TEST();
 	HAL_GpsInit( );
 
   /* USER CODE END 2 */
@@ -233,6 +238,59 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+#if (defined(__GNUC__) && !defined(__CC_ARM))
+/* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+   set to 'Yes') calls __io_putchar() */
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#define GETCHAR_PROTOTYPE int __io_getchar(void)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#define GETCHAR_PROTOTYPE int fgetc(FILE *f)
+#endif /* __GNUC__ */
+
+/**
+  * @brief  Retargets the C library printf function to the USART.
+  * @param  None
+  * @retval None
+  */
+PUTCHAR_PROTOTYPE
+{
+  /* Place your implementation of fputc here */
+  /* e.g. write a character to the USART2 and Loop until the end of transmission */
+  while (HAL_OK != HAL_UART_Transmit(&xConsoleUart, (uint8_t *) &ch, 1, 30000))
+  {
+    ;
+  }
+  return ch;
+}
+
+/**
+  * @brief  Retargets the C library scanf function to the USART.
+  * @param  None
+  * @retval None
+  */
+GETCHAR_PROTOTYPE
+{
+  /* Place your implementation of fgetc here */
+  /* e.g. read a character on USART and loop until the end of read */
+  uint8_t ch = 0;
+  while (HAL_OK != HAL_UART_Receive(&xConsoleUart, (uint8_t *)&ch, 1, 30000))
+  {
+    ;
+  }
+  return ch;
+}
+void vMainUARTPrintString( char * pcString )
+{
+    const uint32_t ulTimeout = 3000UL;
+
+    HAL_UART_Transmit( &xConsoleUart,
+                       ( uint8_t * ) pcString,
+                       strlen( pcString ),
+                       ulTimeout );
+}
+
+ 
 
 /* USER CODE END 4 */
 

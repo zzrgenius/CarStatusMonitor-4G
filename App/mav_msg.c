@@ -76,6 +76,7 @@ void mav_send_imu_msg(int16_t xacc ,int16_t yacc ,int16_t zacc,
 	g_raw_imu.xmag = xmag;
 	g_raw_imu.ymag = ymag;
 	g_raw_imu.xacc = zmag;
+	printf("zacc is %d",zacc);
 	mavlink_msg_raw_imu_encode(MAV_SYSTEM_ID,MAV_COMP_ID_IMU,&mav_message,&g_raw_imu);
 	//save_imubuf_toflash(&g_raw_imu);
 	//load_imubuf_toflash(&test_raw_imu);

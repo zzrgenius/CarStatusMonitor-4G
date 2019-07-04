@@ -61,6 +61,9 @@
 
 #define SD_DEC_Pin GPIO_PIN_13
 #define SD_DEC_GPIO_Port GPIOC
+#define USER_BUTTON_Pin GPIO_PIN_0
+#define USER_BUTTON_GPIO_Port GPIOB
+#define USER_BUTTON_EXTI_IRQn EXTI0_IRQn
 #define RS485_DE_Pin GPIO_PIN_1
 #define RS485_DE_GPIO_Port GPIOB
 #define SIM_POWER_EN_Pin GPIO_PIN_9
@@ -75,6 +78,9 @@
 #define LED3_GPIO_Port GPIOE
 #define LED4_Pin GPIO_PIN_15
 #define LED4_GPIO_Port GPIOE
+#define INVEN_INT_Pin GPIO_PIN_15
+#define INVEN_INT_GPIO_Port GPIOB
+#define INVEN_INT_EXTI_IRQn EXTI15_10_IRQn
 
 /* ########################## Assert Selection ############################## */
 /**
@@ -84,7 +90,8 @@
 /* #define USE_FULL_ASSERT    1U */
 
 /* USER CODE BEGIN Private defines */
-#define USE_OS 1
+
+#define USE_OS 				1
 #define LONG_TIME			0xffff 
 #define LIMITED_AM				4.81f
 #define USE_FULL_ASSERT
