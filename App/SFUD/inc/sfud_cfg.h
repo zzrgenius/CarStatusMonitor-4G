@@ -29,7 +29,7 @@
 #ifndef _SFUD_CFG_H_
 #define _SFUD_CFG_H_
 
-//#define SFUD_DEBUG_MODE
+#define SFUD_DEBUG_MODE
 
 #define SFUD_USING_SFDP
 
@@ -42,7 +42,7 @@ enum {
 
 #define SFUD_FLASH_DEVICE_TABLE                                                \
 {                                                                              \
-    [SFUD_WINBOND_DEVICE_INDEX] = {.name = "W25Q128BV", .spi.name = "SPI1"},       \
+    [SFUD_WINBOND_DEVICE_INDEX] = {.name = "W25Q64JV", .spi.name = "SPI1"},       \
 }
 
 #endif /* _SFUD_CFG_H_ */

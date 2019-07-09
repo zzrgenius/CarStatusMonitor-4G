@@ -69,7 +69,9 @@ void MX_FATFS_Init(void)
   retUSER = FATFS_LinkDriver(&USER_Driver, USERPath);
 
   /* USER CODE BEGIN Init */
-  /* additional user code for init */     
+  /* additional user code for init */  
+printf("retSD is %d \r\n",retSD);	
+printf("retUSER is %d \r\n",retUSER);	
   /* USER CODE END Init */
 }
 

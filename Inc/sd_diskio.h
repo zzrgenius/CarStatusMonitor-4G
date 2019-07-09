@@ -52,10 +52,13 @@
 
 /* USER CODE BEGIN firstSection */ 
 /* can be used to modify / undefine following code or add new definitions */
+#include "ff_gen_drv.h"
+
 /* USER CODE END firstSection */
 
 /* Includes ------------------------------------------------------------------*/
 #include "bsp_driver_sd.h"
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

@@ -81,6 +81,8 @@
 osThreadId defaultTaskHandle;
 osThreadId myTaskGPSHandle;
 osThreadId myTaskMPUHandle;
+osThreadId myTaskSensorsHandle;
+osThreadId uSDThreadHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -90,6 +92,8 @@ osThreadId myTaskMPUHandle;
 void StartDefaultTask(void const * argument);
 extern void StartTaskGPS(void const * argument);
 extern void StartTaskMPU(void const * argument);
+extern void StartTaskSensorsGet(void const * argument);
+extern void StartTaskSD(void const * argument);
 
 extern void MX_FATFS_Init(void);
 extern void MX_LIBJPEG_Init(void);
@@ -136,16 +140,24 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityLow, 0, 128);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of myTaskGPS */
-  osThreadDef(myTaskGPS, StartTaskGPS, osPriorityNormal, 0, 512);
+  osThreadDef(myTaskGPS, StartTaskGPS, osPriorityBelowNormal, 0, 512);
   myTaskGPSHandle = osThreadCreate(osThread(myTaskGPS), NULL);
 
   /* definition and creation of myTaskMPU */
-  osThreadDef(myTaskMPU, StartTaskMPU, osPriorityIdle, 0, 1024);
+  osThreadDef(myTaskMPU, StartTaskMPU, osPriorityAboveNormal, 0, 1024);
   myTaskMPUHandle = osThreadCreate(osThread(myTaskMPU), NULL);
+
+  /* definition and creation of myTaskSensors */
+  osThreadDef(myTaskSensors, StartTaskSensorsGet, osPriorityNormal, 0, 256);
+  myTaskSensorsHandle = osThreadCreate(osThread(myTaskSensors), NULL);
+
+  /* definition and creation of uSDThread */
+  osThreadDef(uSDThread, StartTaskSD, osPriorityBelowNormal, 0, 1024);
+  uSDThreadHandle = osThreadCreate(osThread(uSDThread), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

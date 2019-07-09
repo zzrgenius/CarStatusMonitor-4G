@@ -66,6 +66,8 @@
 
 /* USER CODE BEGIN Includes */
 #include "osprintf.h"
+#include "easyflash.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -139,7 +141,16 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-	printf("test usart1\r\n");
+ //   HAL_NVIC_DisableIRQ(EXTI15_10_IRQn);
+
+	 if (easyflash_init() == EF_NO_ERR) {
+         printf("easy flash success!\r\n");
+	 }
+	 else
+	 {
+		  printf("easy flash error!\r\n");
+		 while(1);
+	 }
 	osprintf_init();
 //	mpu_main();// SHT_TEST();// opt_test(  ); 
 //bmp280_test(); //SHT_TEST();

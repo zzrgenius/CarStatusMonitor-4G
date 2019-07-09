@@ -688,10 +688,10 @@ static void handle_input(void)
  * ISR context. In this example, it sets a flag protecting the FIFO read
  * function.
  */
-void gyro_data_ready_cb(void)
-{
-    hal.new_gyro = 1;
-}
+//void gyro_data_ready_cb(void)
+//{
+//    hal.new_gyro = 1;
+//}
 /*******************************************************************************/
 
 /**

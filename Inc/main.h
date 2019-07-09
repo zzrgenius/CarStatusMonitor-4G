@@ -55,12 +55,13 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
+
 /* USER CODE END Includes */
 
 /* Private define ------------------------------------------------------------*/
 
-#define SD_DEC_Pin GPIO_PIN_13
-#define SD_DEC_GPIO_Port GPIOC
+#define SD_DETECT_Pin GPIO_PIN_13
+#define SD_DETECT_GPIO_Port GPIOC
 #define USER_BUTTON_Pin GPIO_PIN_0
 #define USER_BUTTON_GPIO_Port GPIOB
 #define USER_BUTTON_EXTI_IRQn EXTI0_IRQn
@@ -81,6 +82,8 @@
 #define INVEN_INT_Pin GPIO_PIN_15
 #define INVEN_INT_GPIO_Port GPIOB
 #define INVEN_INT_EXTI_IRQn EXTI15_10_IRQn
+#define SPI1_CS_Pin GPIO_PIN_5
+#define SPI1_CS_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**

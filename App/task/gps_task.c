@@ -88,11 +88,12 @@ void StartTaskGPS( void *pvParameters )
 				shared resource. */
 				/* ... */
  
-						//	LED_Toggle(LED3);
+						 
+				LED_Toggle(LED1); 
 
 				
 				nmea_parse(&parser,(const char*)gGPSBuf,USART_BUF_SIZE, &info); 
-				printf("Latitude: %f degrees\r\n", info.lat);
+			//	printf("Latitude: %f degrees\r\n", info.lat);
 //				memcpy((uint8_t *)&bj_time ,(uint8_t*)&(info.utc),sizeof(nmeaTIME));
 //				DateTime_GMT2BJTime(& bj_time);
 

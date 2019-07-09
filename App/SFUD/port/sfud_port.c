@@ -177,7 +177,7 @@ static void retry_delay_100us(void) {
     while(delay--);
 }
 
-static spi_user_data spi1 = { .spix = &hspi1, .cs_gpiox = GPIOA, .cs_gpio_pin = GPIO_PIN_4 };
+static spi_user_data spi1 = { .spix = &hspi1, .cs_gpiox = GPIOB, .cs_gpio_pin = GPIO_PIN_5 };
 sfud_err sfud_spi_port_init(sfud_flash *flash) {
     sfud_err result = SFUD_SUCCESS;
 

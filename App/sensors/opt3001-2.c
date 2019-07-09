@@ -27,7 +27,7 @@ extern I2C_HandleTypeDef hi2c2;
 //	  return  Sensors_I2C_WriteRegister(i2c_addr<<1, reg_addr,2,(unsigned char*)&reg_data );
 
 // }
-uint16_t opt3001_read(uint8_t reg_addr )
+uint16_t opt3001_read(uint16_t reg_addr )
  {
 	 	uint16_t reg_data;
 	HAL_StatusTypeDef status = HAL_OK;
