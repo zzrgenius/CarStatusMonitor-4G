@@ -32,6 +32,7 @@ static uint8_t buffer[_MAX_SS]; /* a work buffer for the f_mkfs() */
   
   /*##-1- Link the micro SD disk I/O driver ##################################*/
 //	MX_FATFS_Init();
+	#if 0
   if(FATFS_LinkDriver(&SD_Driver, SDPath) == 0)
   { 
     /*##-2- Register the file system object to the FatFs module ##############*/
@@ -110,13 +111,16 @@ static uint8_t buffer[_MAX_SS]; /* a work buffer for the f_mkfs() */
         }
       }
     }
-  }
+  } 
+  #endif
   
   /*##-11- Unlink the RAM disk I/O driver ####################################*/
-  FATFS_UnLinkDriver(SDPath);
+  //FATFS_UnLinkDriver(SDPath);
+ 
   
   /* Infinite Loop */
   for( ;; )
   {
+	  vTaskDelay(1000);
   }
 }

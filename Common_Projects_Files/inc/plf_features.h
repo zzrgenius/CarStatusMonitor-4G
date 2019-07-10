@@ -59,8 +59,8 @@ extern "C" {
 /* ===================================== */
 /* BEGIN - Applications to include       */
 /* ===================================== */
-#define USE_HTTP_CLIENT    (1) /* 0: not activated, 1: activated */
-#define USE_PING_CLIENT    (1) /* 0: not activated, 1: activated */
+#define USE_HTTP_CLIENT    (0) /* 0: not activated, 1: activated */
+#define USE_PING_CLIENT    (0) /* 0: not activated, 1: activated */
 #define USE_DC_EMUL        (1) /* 0: not activated, 1: activated */
 #define USE_DC_TEST        (0) /* 0: not activated, 1: activated */
 

@@ -56,7 +56,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
-
+#include "cellular_init.h"
+#include "stdlib.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -178,7 +179,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* init code for FATFS */
-  MX_FATFS_Init();
+ // MX_FATFS_Init();
 
   /* init code for LIBJPEG */
   MX_LIBJPEG_Init();
@@ -187,6 +188,17 @@ void StartDefaultTask(void const * argument)
   MX_MBEDTLS_Init();
 
   /* USER CODE BEGIN StartDefaultTask */
+	  /* statical init of components */
+  cellular_init();
+
+#if (USE_HTTP_CLIENT == 1)
+  http_client_init();
+#endif
+
+#if (USE_PING_CLIENT == 1)
+  ping_client_init();
+#endif
+	
   /* Infinite loop */
   for(;;)
   {

@@ -116,9 +116,9 @@ extern "C" {
 #if (SW_DEBUG_VERSION == 1U)
 /* ### SOFTWARE DEBUG VERSION :  traces activated ### */
 /* trace channels: ITM - UART */
-#define TRACE_IF_TRACES_ITM           (1U) /* trace_interface module send traces to ITM */
+#define TRACE_IF_TRACES_ITM           (0U) /* trace_interface module send traces to ITM */
 #define TRACE_IF_TRACES_UART          (1U) /* trace_interface module send traces to UART */
-#define USE_PRINTF                    (0U) /* if set to 1, use printf instead of trace_interface module */
+#define USE_PRINTF                    (1U) /* if set to 1, use printf instead of trace_interface module */
 
 /* trace masks allowed */
 /* P0, WARN and ERROR traces only */

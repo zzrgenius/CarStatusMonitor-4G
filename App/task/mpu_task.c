@@ -462,7 +462,7 @@ void StartTaskMPU(void const * argument)
 					{             
 						new_compass = 1;
 						new_temp = 1;
-						osprintf("timestamp is %ld new_compass is %d",timestamp,new_compass);
+						//osprintf("timestamp is %ld new_compass is %d",timestamp,new_compass);
 //						if (inv_get_sensor_type_linear_acceleration(float_data, &accuracy, (inv_time_t*)&data_timestamp)) 
 //						{
 //							osprintf("linear acceleration:\r\nx is %f\r\ny is %f\r\nz is %f\r\n",float_data[0],float_data[1],float_data[2]);

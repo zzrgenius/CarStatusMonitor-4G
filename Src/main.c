@@ -139,7 +139,7 @@ int main(void)
   MX_UART4_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
-  MX_USART3_UART_Init();
+ // MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
  //   HAL_NVIC_DisableIRQ(EXTI15_10_IRQn);
 

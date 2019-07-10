@@ -28,6 +28,7 @@
 #include "semphr.h"
 #include "queue.h"
 #endif
+#include "ipc_uart.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -189,6 +190,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		#endif
 		//__HAL_DMA_DISABLE_IT(huart3.hdmarx, (DMA_IT_TC | DMA_IT_TE));		
   	}
+	if (huart->Instance == MODEM_UART_INSTANCE)
+  {
+    IPC_UART_RxCpltCallback(huart);
+  }
 //	if(huart->hdmarx == &hdma_usart3_rx)
 //	{
 //	//	__HAL_DMA_CLEAR_FLAG(huart->hdmarx,DMA_FLAG_TCIF3);  
@@ -203,21 +208,32 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		
 		 
 }
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart->Instance == MODEM_UART_INSTANCE)
+  {
+    IPC_UART_TxCpltCallback(huart);
+  }
+}
  
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
 	    uint8_t i = 0;
 	
 	
-	      __HAL_UART_CLEAR_NEFLAG(huart);
-        __HAL_UART_CLEAR_FEFLAG(huart);
-        __HAL_UART_CLEAR_OREFLAG(huart);
-	if((__HAL_UART_GET_FLAG(huart,UART_FLAG_ORE) != RESET))  
-	{
-//		__HAL_UART_CLEAR_IT(huart,UART_CLEAR_OREF);
-		HAL_UART_Receive(huart,(uint8_t *)&i,1,0xff);
-		
-	}
+	 if (huart->Instance == MODEM_UART_INSTANCE)
+  {
+    IPC_UART_ErrorCallback(huart);
+  }
+//	      __HAL_UART_CLEAR_NEFLAG(huart);
+//        __HAL_UART_CLEAR_FEFLAG(huart);
+//        __HAL_UART_CLEAR_OREFLAG(huart);
+//	if((__HAL_UART_GET_FLAG(huart,UART_FLAG_ORE) != RESET))  
+//	{
+////		__HAL_UART_CLEAR_IT(huart,UART_CLEAR_OREF);
+//		HAL_UART_Receive(huart,(uint8_t *)&i,1,0xff);
+//		
+//	}
 	
 }
 //#if (defined(__GNUC__) && !defined(__CC_ARM))

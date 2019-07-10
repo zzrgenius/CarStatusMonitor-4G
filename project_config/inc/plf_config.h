@@ -34,6 +34,9 @@ extern "C" {
 #include "plf_hw_config.h"
 #include "plf_sw_config.h"
 
+
+//#define AT_TEST
+
 #ifdef __cplusplus 
 } 
 #endif 
