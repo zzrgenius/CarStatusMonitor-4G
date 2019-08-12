@@ -82,6 +82,8 @@
 #define INVEN_INT_Pin GPIO_PIN_15
 #define INVEN_INT_GPIO_Port GPIOB
 #define INVEN_INT_EXTI_IRQn EXTI15_10_IRQn
+#define SIM_RST_GPIO_Port_Pin GPIO_PIN_11
+#define SIM_RST_GPIO_Port_GPIO_Port GPIOD
 #define SPI1_CS_Pin GPIO_PIN_5
 #define SPI1_CS_GPIO_Port GPIOB
 
@@ -95,6 +97,8 @@
 /* USER CODE BEGIN Private defines */
 
 #define USE_OS 				1
+#define RTOS_USED			1
+#define USE_PRINTF 				1
 #define LONG_TIME			0xffff 
 #define LIMITED_AM				4.81f
 #define USE_FULL_ASSERT

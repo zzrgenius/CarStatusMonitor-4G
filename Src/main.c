@@ -56,8 +56,6 @@
 #include "dma.h"
 #include "fatfs.h"
 #include "i2c.h"
-#include "libjpeg.h"
-#include "mbedtls.h"
 #include "rtc.h"
 #include "sdio.h"
 #include "spi.h"
@@ -68,6 +66,8 @@
 #include "osprintf.h"
 #include "easyflash.h"
 #include <stdio.h>
+#include "os_i2c.h"
+#include "rtc_time.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -105,7 +105,7 @@ extern int mpu_main(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+nmeaTIME	local_time;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -139,10 +139,10 @@ int main(void)
   MX_UART4_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
- // MX_USART3_UART_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
  //   HAL_NVIC_DisableIRQ(EXTI15_10_IRQn);
-
+	os_iic();
 	 if (easyflash_init() == EF_NO_ERR) {
          printf("easy flash success!\r\n");
 	 }
@@ -152,10 +152,12 @@ int main(void)
 		 while(1);
 	 }
 	osprintf_init();
-//	mpu_main();// SHT_TEST();// opt_test(  ); 
+//	mpu_main();// SHT_TEST();//
+	 //opt_test(  ); 
 //bmp280_test(); //SHT_TEST();
 	HAL_GpsInit( );
-
+		TM_GetLocaltime(&local_time);
+	 printf("start time is %d:%d:%d\r\n",local_time.hour,local_time.min,local_time.sec);
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
@@ -268,10 +270,8 @@ PUTCHAR_PROTOTYPE
 {
   /* Place your implementation of fputc here */
   /* e.g. write a character to the USART2 and Loop until the end of transmission */
-  while (HAL_OK != HAL_UART_Transmit(&xConsoleUart, (uint8_t *) &ch, 1, 30000))
-  {
-    ;
-  }
+    HAL_UART_Transmit(&xConsoleUart, (uint8_t *) &ch, 1, 30000);
+ 
   return ch;
 }
 

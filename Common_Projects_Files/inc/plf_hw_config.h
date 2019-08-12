@@ -64,7 +64,7 @@ extern "C" {
 /* ---- MODEM other pins configuration ---- */
 #if defined(CONFIG_MODEM_USE_STMOD_CONNECTOR)
 #define MODEM_RST_GPIO_Port             GPIOD       /* MDM_RST_GPIO_Port */
-#define MODEM_RST_Pin                   GPIO_PIN_11 /* MDM_RST_Pin */
+#define MODEM_RST_Pin                   GPIO_PIN_11  /* MDM_RST_Pin */
 #define MODEM_PWR_EN_GPIO_Port          GPIOE       /* MDM_PWR_EN_GPIO_Port */
 #define MODEM_PWR_EN_Pin                GPIO_PIN_9  /* MDM_PWR_EN_Pin */
 #define MODEM_DTR_GPIO_Port             GPIOD       /* MDM_DTR_GPIO_Port */
@@ -82,8 +82,8 @@ extern "C" {
 #error Connector not specified
 #endif
 
-#define PPPOS_LINK_UART_HANDLE   NULL
-#define PPPOS_LINK_UART_INSTANCE NULL
+#define PPPOS_LINK_UART_HANDLE   	NULL
+#define PPPOS_LINK_UART_INSTANCE 	NULL
 
 /* Resource LED definition */
 #define HTTP_LED_GPIO_PORT      LED1_GPIO_Port
@@ -108,7 +108,6 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 
 /* External variables --------------------------------------------------------*/
-extern UART_HandleTypeDef       huart2;
 extern UART_HandleTypeDef       huart1;
 extern UART_HandleTypeDef       huart3;
 

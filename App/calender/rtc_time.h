@@ -63,5 +63,5 @@ void TM_GetLocaltime(nmeaTIME*	local_time);
 unsigned int  xDate2Seconds(nmeaTIME *time);
 void TM_SetTime(uint8_t hour,uint8_t min ,uint8_t sec);
 void TM_SetDate(uint16_t year,uint8_t mon ,uint8_t day);
- 
+ void UTC_to_BJtime(nmeaTIME*	utc_time, int8_t	timezone);
 #endif /*   */

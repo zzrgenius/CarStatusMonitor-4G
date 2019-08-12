@@ -34,7 +34,7 @@ extern "C" {
 
 /* Compilation Flag  BEGIN */
 /* Stack size trace analysis */
-#define STACK_ANALYSIS_TRACE   (1)
+#define STACK_ANALYSIS_TRACE   (0)
 #if (STACK_ANALYSIS_TRACE == 1)
 #include "stack_analysis.h"
 #endif /* STACK_ANALYSIS_TRACE */
@@ -116,7 +116,7 @@ extern "C" {
 #if (SW_DEBUG_VERSION == 1U)
 /* ### SOFTWARE DEBUG VERSION :  traces activated ### */
 /* trace channels: ITM - UART */
-#define TRACE_IF_TRACES_ITM           (0U) /* trace_interface module send traces to ITM */
+#define TRACE_IF_TRACES_ITM           (1U) /* trace_interface module send traces to ITM */
 #define TRACE_IF_TRACES_UART          (1U) /* trace_interface module send traces to UART */
 #define USE_PRINTF                    (1U) /* if set to 1, use printf instead of trace_interface module */
 

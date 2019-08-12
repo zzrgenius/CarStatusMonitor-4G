@@ -56,8 +56,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
-#include "cellular_init.h"
+//#include "cellular_init.h"
 #include "stdlib.h"
+#include "sim_service.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -84,10 +85,11 @@ osThreadId myTaskGPSHandle;
 osThreadId myTaskMPUHandle;
 osThreadId myTaskSensorsHandle;
 osThreadId uSDThreadHandle;
+osThreadId myTaskGSMHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-   
+ 
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
@@ -95,10 +97,9 @@ extern void StartTaskGPS(void const * argument);
 extern void StartTaskMPU(void const * argument);
 extern void StartTaskSensorsGet(void const * argument);
 extern void StartTaskSD(void const * argument);
+extern void StartTaskGSM(void const * argument);
 
 extern void MX_FATFS_Init(void);
-extern void MX_LIBJPEG_Init(void);
-extern void MX_MBEDTLS_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* Pre/Post sleep processing prototypes */
@@ -149,16 +150,20 @@ void MX_FREERTOS_Init(void) {
   myTaskGPSHandle = osThreadCreate(osThread(myTaskGPS), NULL);
 
   /* definition and creation of myTaskMPU */
-  osThreadDef(myTaskMPU, StartTaskMPU, osPriorityAboveNormal, 0, 1024);
+  osThreadDef(myTaskMPU, StartTaskMPU,  osPriorityBelowNormal, 0, 1024);
   myTaskMPUHandle = osThreadCreate(osThread(myTaskMPU), NULL);
 
   /* definition and creation of myTaskSensors */
-  osThreadDef(myTaskSensors, StartTaskSensorsGet, osPriorityNormal, 0, 256);
+  osThreadDef(myTaskSensors, StartTaskSensorsGet, osPriorityAboveNormal, 0, 256);
   myTaskSensorsHandle = osThreadCreate(osThread(myTaskSensors), NULL);
 
   /* definition and creation of uSDThread */
   osThreadDef(uSDThread, StartTaskSD, osPriorityBelowNormal, 0, 1024);
   uSDThreadHandle = osThreadCreate(osThread(uSDThread), NULL);
+
+  /* definition and creation of myTaskGSM */
+//  osThreadDef(myTaskGSM, StartTaskGSM, osPriorityNormal, 0, 1024);
+//  myTaskGSMHandle = osThreadCreate(osThread(myTaskGSM), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -179,25 +184,10 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* init code for FATFS */
- // MX_FATFS_Init();
-
-  /* init code for LIBJPEG */
-  MX_LIBJPEG_Init();
-
-  /* Up to user define the empty MX_MBEDTLS_Init() function located in mbedtls.c file */
-  MX_MBEDTLS_Init();
+//  MX_FATFS_Init();
 
   /* USER CODE BEGIN StartDefaultTask */
 	  /* statical init of components */
-  cellular_init();
-
-#if (USE_HTTP_CLIENT == 1)
-  http_client_init();
-#endif
-
-#if (USE_PING_CLIENT == 1)
-  ping_client_init();
-#endif
 	
   /* Infinite loop */
   for(;;)

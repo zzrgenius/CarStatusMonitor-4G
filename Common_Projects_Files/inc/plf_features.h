@@ -59,14 +59,14 @@ extern "C" {
 /* ===================================== */
 /* BEGIN - Applications to include       */
 /* ===================================== */
-#define USE_HTTP_CLIENT    (0) /* 0: not activated, 1: activated */
+#define USE_HTTP_CLIENT    (1) /* 0: not activated, 1: activated */
 #define USE_PING_CLIENT    (0) /* 0: not activated, 1: activated */
-#define USE_DC_EMUL        (1) /* 0: not activated, 1: activated */
+#define USE_DC_EMUL        (0) /* 0: not activated, 1: activated */
 #define USE_DC_TEST        (0) /* 0: not activated, 1: activated */
 
 /* MEMS setup */
-#define USE_DC_MEMS        (1) /* 0: not activated, 1: activated */
-#define USE_SIMU_MEMS      (1) /* 0: not activated, 1: activated */
+#define USE_DC_MEMS        (0) /* 0: not activated, 1: activated */
+#define USE_SIMU_MEMS      (0) /* 0: not activated, 1: activated */
 
 #if ( USE_PING_CLIENT == 1 ) && ( USE_COM_PING == 0 )
 #error USE_COM_PING must be set to 1 when Ping Client is activated.

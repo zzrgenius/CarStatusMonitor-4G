@@ -62,7 +62,7 @@ extern "C" {
 #define BG96_BAND_CONFIG_CAT_M1_ONLY_FULL_BANDS   (0)
 #define BG96_BAND_CONFIG_CAT_NB1_ONLY_FULL_BANDS  (0)
 #define BG96_BAND_CONFIG_GSM_ONLY_FULL_BANDS      (0)
-#define BG96_BAND_CONFIG_DEFAULT                  (0)
+#define BG96_BAND_CONFIG_DEFAULT                  (1)
 /* Custom BG96 band configs (!!! pre-defined configs above have to be commented if using custom config) */
 #define BG96_BAND_CONFIG_CUSTOM                   (0) /* customizable by user (modify config below */
 #define BG96_BAND_CONFIG_VERIZON                  (0) /* pre-defined VERIZON config (M1 only, band 4 + band 13) */

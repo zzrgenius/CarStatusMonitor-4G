@@ -89,6 +89,9 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOE, SIM_POWER_EN_Pin|GPS_POWER_EN_Pin|LED1_Pin|LED2_Pin 
                           |LED3_Pin|LED4_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(SIM_RST_GPIO_Port_GPIO_Port, SIM_RST_GPIO_Port_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = SD_DETECT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -123,6 +126,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(INVEN_INT_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PtPin */
+  GPIO_InitStruct.Pin = SIM_RST_GPIO_Port_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(SIM_RST_GPIO_Port_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pin : PA8 */
   GPIO_InitStruct.Pin = GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -143,7 +153,7 @@ void MX_GPIO_Init(void)
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 6, 0);
-  HAL_NVIC_DisableIRQ(EXTI15_10_IRQn);
+ // HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 

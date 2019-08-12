@@ -25,6 +25,7 @@
 #include "stdio.h"
 #include "nmea.h"
 #include "bsp_serial.h"
+#include "osprintf.h"
 #include "bsp_led.h"
 #include "gpio.h"
 #include "time.h"
@@ -34,7 +35,8 @@
   
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-QueueHandle_t g_GPSDataProcQueue;  
+QueueHandle_t g_GPSDataProcQueue; 
+static uint8_t set_localrtc_flag = 0;
 extern UART_HandleTypeDef huart4;
  
 extern uint8_t usart4_rx_buf[USART_BUF_SIZE];
@@ -46,7 +48,7 @@ char gGPSBuf[USART_BUF_SIZE];
 nmeaINFO info;
 nmeaPARSER parser;
  /* Private function prototypes -----------------------------------------------*/
- 
+
 void HAL_GpsInit( void )
 {
    //gps_init(&g_hgps);                             /* Init GPS */
@@ -64,7 +66,7 @@ void HAL_GpsInit( void )
 	//gpsTaskStart();
 }
 
-  
+ 
 void StartTaskGPS( void *pvParameters )
 {
 //	nmeaTIME bj_time;
@@ -89,13 +91,23 @@ void StartTaskGPS( void *pvParameters )
 				/* ... */
  
 						 
-				LED_Toggle(LED1); 
+			
 
 				
 				nmea_parse(&parser,(const char*)gGPSBuf,USART_BUF_SIZE, &info); 
+				if( (set_localrtc_flag == 0) &&  (info.sig != 0)  )
+				{
+					set_localrtc_flag = 1;
+					UTC_to_BJtime(&info.utc,8); 
+					 TM_SetTime(info.utc.hour,info.utc.min,info.utc.sec);
+					TM_SetDate(info.utc.year,info.utc.mon ,info.utc.day);
+					osprintf("set local time\r\n");
+				}
 			//	printf("Latitude: %f degrees\r\n", info.lat);
-//				memcpy((uint8_t *)&bj_time ,(uint8_t*)&(info.utc),sizeof(nmeaTIME));
-//				DateTime_GMT2BJTime(& bj_time);
+// 				memcpy((uint8_t *)&bj_time ,(uint8_t*)&(info.utc),sizeof(nmeaTIME));
+// 				DateTime_GMT2BJTime(& bj_time);
+ //void TM_SetTime(uint8_t hour,uint8_t min ,uint8_t sec)	
+//void TM_SetDate(uint16_t year,uint8_t mon ,uint8_t day)
 
 				HAL_UART_Receive_DMA(&huart4,usart4_rx_buf,USART_BUF_SIZE);
 			

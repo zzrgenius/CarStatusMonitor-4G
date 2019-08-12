@@ -1,5 +1,7 @@
 #include "i2c.h"
 #include "bsp_led.h"
+#include "bsp.h"
+
 #include "mpu9250_driver.h"
 extern I2C_HandleTypeDef hi2c2;
 #define    I2C_EXPBD_Handle  hi2c2
@@ -31,8 +33,7 @@ void TimingDelay_Decrement(void)
 }
   
  
-
-
+ 
 /**
  * @brief  Write data to the register of the device through BUS
  * @param  Addr Device address on BUS
@@ -47,9 +48,9 @@ static uint8_t I2C_EXPBD_WriteData( uint8_t Addr, uint8_t Reg,  uint16_t Size, u
 
   HAL_StatusTypeDef status = HAL_OK;
 
+ //HAL_I2C_Mem_Write( &I2C_EXPBD_Handle, Addr, ( uint16_t )Reg, I2C_MEMADD_SIZE_8BIT, pBuffer, Size,                              I2C_EXPBD_Timeout );	
   status = HAL_I2C_Mem_Write( &I2C_EXPBD_Handle, Addr, ( uint16_t )Reg, I2C_MEMADD_SIZE_8BIT, pBuffer, Size,
                               I2C_EXPBD_Timeout );
-
   /* Check the communication status */
   if( status != HAL_OK )
   {
@@ -80,8 +81,8 @@ static uint8_t I2C_EXPBD_ReadData( uint8_t Addr, uint16_t Reg,  uint16_t Size,ui
 
   HAL_StatusTypeDef status = HAL_OK;
 
-  status = HAL_I2C_Mem_Read( &I2C_EXPBD_Handle, Addr, ( uint16_t )Reg, I2C_MEMADD_SIZE_8BIT, pBuffer, Size,
-                             I2C_EXPBD_Timeout );
+ status = HAL_I2C_Mem_Read( &I2C_EXPBD_Handle, Addr, ( uint16_t )Reg, I2C_MEMADD_SIZE_8BIT, pBuffer, Size,                             I2C_EXPBD_Timeout );
+
 
   /* Check the communication status */
   if( status != HAL_OK )
@@ -111,14 +112,14 @@ static uint8_t I2C_EXPBD_Init( void )
 
     /* I2C_EXPBD peripheral configuration */
 
-    I2C_EXPBD_Handle.Init.ClockSpeed = 400000;
-    I2C_EXPBD_Handle.Init.DutyCycle = I2C_DUTYCYCLE_2;
- 
+//    I2C_EXPBD_Handle.Init.ClockSpeed = 400000;
+//    I2C_EXPBD_Handle.Init.DutyCycle = I2C_DUTYCYCLE_2;
+// 
 
- 
-    I2C_EXPBD_Handle.Init.OwnAddress1    = 0x33;
-    I2C_EXPBD_Handle.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-    I2C_EXPBD_Handle.Instance            = I2C_EXPBD;
+// 
+//    I2C_EXPBD_Handle.Init.OwnAddress1    = 0x33;
+//    I2C_EXPBD_Handle.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+//    I2C_EXPBD_Handle.Instance            = I2C_EXPBD;
 
     /* Init the I2C */
     MX_I2C2_Init();
@@ -143,6 +144,9 @@ static void I2C_EXPBD_Error( uint8_t Addr )
 {
 
   /* De-initialize the I2C comunication bus */
+	    I2Cx_Reset( &I2C_EXPBD_Handle);
+ 
+	
   HAL_I2C_DeInit( &I2C_EXPBD_Handle );
 
   /* Re-Initiaize the I2C comunication bus */
@@ -161,10 +165,7 @@ unsigned short Get_I2C_Retry()
 }
 
 
- int Sensors_I2C_WriteRegister(unsigned char slave_addr,
-                                       unsigned char reg_addr,
-                                        unsigned short len, 
-                                          unsigned char *data_ptr)
+ int Sensors_I2C_WriteRegister(unsigned char slave_addr, unsigned char reg_addr,unsigned short len, unsigned char *data_ptr)
 {
   char retries=0;
   int ret = 0;

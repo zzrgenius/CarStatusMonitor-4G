@@ -27,7 +27,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "plf_config.h"
-#include "stm32F4xx_hal.h"
+#include "stm32l4xx_hal.h"
 #include <string.h>
 
 /* define debug levels (bitmap) */

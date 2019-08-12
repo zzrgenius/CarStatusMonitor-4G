@@ -270,24 +270,3 @@ void StartTaskMPU(void const * argument)
 		}
 	}
 }
-  void StartTaskSensorsGet(void const * argument)
-  {
-	      int new_data = 0;
-    unsigned long sensor_timestamp;
-#if USE_OS
-	TickType_t xLastWakeTime;
-	const TickType_t xFrequency = COMPASS_READ_MS*10;
-
-     // Initialise the xLastWakeTime variable with the current time.
-     xLastWakeTime = xTaskGetTickCount();
-	
-#endif
-	  
-	  while(1)
-	  {
-			LED_Toggle(LED4); 
-		  
-		  vTaskDelayUntil( &xLastWakeTime, xFrequency );
-	  }        
-	  
-  }

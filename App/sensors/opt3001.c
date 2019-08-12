@@ -184,6 +184,7 @@ static void opt3001_set_mode(struct opt3001 *opt, uint16_t *reg, uint16_t mode)
 uint8_t i2c_smbus_read_word_swapped(uint8_t i2c_addr, uint16_t cmd)
 {
 	uint8_t reg_data;
+	
 	Sensors_I2C_ReadRegister(i2c_addr<<1,cmd,1,&reg_data);
 	return reg_data;
 	

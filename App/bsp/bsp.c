@@ -1,12 +1,17 @@
 
 #include "stm32f4xx_hal.h"
 #include "bsp.h"
-#include "i2c.h"
 
  
 #define EVAL_I2Cx       I2C1
 #define  heval_I2c		hi2c1
-
+#define IIC2_SCLH  	 	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET)	 
+#define IIC2_SCLL	 	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_RESET)	 
+#define IIC2_SDAH  	 	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_11,GPIO_PIN_SET)	 
+#define IIC2_SDAL	 	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_11,GPIO_PIN_RESET)	 
+ 
+ 
+ 
 static void I2Cx_Init(void)
 {
 //  if(HAL_I2C_GetState(&heval_I2c) == HAL_I2C_STATE_RESET)
@@ -27,6 +32,54 @@ static void I2Cx_Init(void)
 //  }
 	MX_I2C1_Init();
 }
+/**********
+void IIC_Send_Byte(u8 txd)
+{                        
+    u8 t;   
+    SDA_OUT();         
+    IIC_SCL=0;//拉低时钟开始数据传输
+    for(t=0;t<8;t++)
+    {              
+        IIC_SDA=(txd&0x80)>>7;
+        txd<<=1;       
+        delay_us(2);   //对TEA5767这三个延时都是必须的
+        IIC_SCL=1;
+        delay_us(2); 
+        IIC_SCL=0;    
+        delay_us(2);
+    }     
+} 
+
+*******/
+  void I2Cx_Reset(I2C_HandleTypeDef* i2cHandle)
+{
+	
+  GPIO_InitTypeDef GPIO_InitStruct;
+	uint8_t i;
+ 
+  /*Configure GPIO pin :   */
+ if( i2cHandle->Instance==I2C2)
+ {
+  
+    GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	 HAL_Delay(100);
+	 IIC2_SDAH;
+	 IIC2_SCLH;
+	 for(i = 0; i < 9; i++)
+	 {
+		  IIC2_SCLL;
+		 HAL_Delay(1);
+		IIC2_SCLH;
+	 }
+	 IIC2_SCLH;
+	 
+ }
+}
+
 /**
   * @brief  Manages error callback by re-initializing I2C.
   * @param  Addr: I2C Address

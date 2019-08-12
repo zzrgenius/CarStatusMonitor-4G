@@ -232,12 +232,12 @@ static inline void run_self_test(void)
 #endif
     }
     else {
-            if (!(result & 0x1))
-                MPL_LOGE("Gyro failed.\n");
-            if (!(result & 0x2))
-                MPL_LOGE("Accel failed.\n");
-            if (!(result & 0x4))
-                MPL_LOGE("Compass failed.\n");
+//            if (!(result & 0x1))
+//                MPL_LOGE("Gyro failed.\n");
+//            if (!(result & 0x2))
+//                MPL_LOGE("Accel failed.\n");
+//            if (!(result & 0x4))
+//                MPL_LOGE("Compass failed.\n");
      }
 
 }
@@ -265,11 +265,11 @@ void StartTaskMPU(void const * argument)
 	
 	  result = mpu_init(&int_param);
   if (result) {
-      MPL_LOGE("Could not initialize gyro.\n");
+      printf("mpu error Could not initialize gyro.\n");
   }
    result = inv_init_mpl();
   if (result) {
-      MPL_LOGE("Could not initialize MPL.\n");
+      printf("mpu error Could not initialize MPL.\n");
   }
  /* Compute 6-axis and 9-axis quaternions. */
     inv_enable_quaternion();
@@ -285,16 +285,16 @@ void StartTaskMPU(void const * argument)
     inv_enable_vector_compass_cal();
     inv_enable_magnetic_disturbance();
 #endif
-  // inv_enable_eMPL_outputs();
-//    result = inv_start_mpl();
-//  if (result == INV_ERROR_NOT_AUTHORIZED) {
-//      while (1) {
-//          MPL_LOGE("Not authorized.\n");
-//      }
-//  }
-//  if (result) {
-//      MPL_LOGE("Could not start the MPL.\n");
-//  }
+	inv_enable_eMPL_outputs();
+    result = inv_start_mpl();
+  if (result == INV_ERROR_NOT_AUTHORIZED) {
+      while (1) {
+          printf("Not authorized.\n");
+      }
+  }
+  if (result) {
+      printf("Could not start the MPL.\n");
+  }
 
 #ifdef COMPASS_ENABLED
     mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL | INV_XYZ_COMPASS);
@@ -420,7 +420,7 @@ void StartTaskMPU(void const * argument)
     hal.dmp_on = 1;
 	
 	  
-            MPL_LOGI("DMP enabled.\n");
+          
 			
    get_tick_count(&timestamp); 
     int new_data = 0;
@@ -587,7 +587,7 @@ void StartTaskMPU(void const * argument)
 					 * accuracy from 0 to 3.
 					 */
 					inv_build_compass(compass, 0, sensor_timestamp);
-					osprintf("compass is %d,%d,%d",compass_short[0],compass_short[1],compass_short[2]);
+					//osprintf("compass is %d,%d,%d",compass_short[0],compass_short[1],compass_short[2]);
 				}
 				new_data = 1;
 			}
@@ -619,23 +619,4 @@ void StartTaskMPU(void const * argument)
 
 	}
 }
-  void StartTaskSensorsGet(void const * argument)
-  {
-	      int new_data = 0;
-    unsigned long sensor_timestamp;
-#if USE_OS
-	TickType_t xLastWakeTime;
-	const TickType_t xFrequency = COMPASS_READ_MS*10;
-
-     // Initialise the xLastWakeTime variable with the current time.
-     xLastWakeTime = xTaskGetTickCount();
-	
-#endif
-	  
-	  while(1)
-	  {
-		LED_Toggle(LED4); 
-		  vTaskDelayUntil( &xLastWakeTime, xFrequency );
-	  }        
-	  
-  }
+ 

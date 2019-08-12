@@ -28,8 +28,8 @@
 #include "semphr.h"
 #include "queue.h"
 #endif
-#include "ipc_uart.h"
-
+#include "usart.h"
+#include "sim_drv.h"
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
@@ -46,14 +46,12 @@
  
  uint8_t usart4_rx_buf[USART_BUF_SIZE];
 
- extern UART_HandleTypeDef huart1;
- extern UART_HandleTypeDef huart2;
- extern UART_HandleTypeDef huart4;
-
+ 
 extern int gpsProcessByte (unsigned char c, char *nmeaSentence);
 extern char gGPSBuf[GPS_BUF_LEN];
 extern uint8_t gps_recdata;
-  
+// extern DMA_HandleTypeDef hdma_usart3_rx;
+
 /* Private function prototypes -----------------------------------------------*/
  
 
@@ -152,7 +150,7 @@ void HAL_USART_RXT_IDLE_Handle(UART_HandleTypeDef *huart)
 // 			
 
 	}
-	
+
 		if(huart->Instance == UART4)
 	{
 		
@@ -190,10 +188,24 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		#endif
 		//__HAL_DMA_DISABLE_IT(huart3.hdmarx, (DMA_IT_TC | DMA_IT_TE));		
   	}
-	if (huart->Instance == MODEM_UART_INSTANCE)
+		if (huart->Instance == USART3)
   {
     IPC_UART_RxCpltCallback(huart);
+	    
+
   }
+//	if (huart->Instance == USART3)
+//  {
+////    
+//	    GSM_USART_IRQHANDLER( ) ;
+// 
+
+//  }
+//	if(huart->hdmarx == &hdma_usart3_rx)
+//	{
+//		//IPC_UART_RxCpltCallback(huart);
+//		 
+//	}
 //	if(huart->hdmarx == &hdma_usart3_rx)
 //	{
 //	//	__HAL_DMA_CLEAR_FLAG(huart->hdmarx,DMA_FLAG_TCIF3);  
@@ -210,7 +222,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 }
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
-  if (huart->Instance == MODEM_UART_INSTANCE)
+  if (huart->Instance == USART3)
   {
     IPC_UART_TxCpltCallback(huart);
   }
@@ -220,10 +232,10 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
 	    uint8_t i = 0;
 	
-	
-	 if (huart->Instance == MODEM_UART_INSTANCE)
+	__HAL_UART_CLEAR_OREFLAG(huart);
+   if (huart->Instance == USART3)
   {
-    IPC_UART_ErrorCallback(huart);
+//    IPC_UART_ErrorCallback(huart);
   }
 //	      __HAL_UART_CLEAR_NEFLAG(huart);
 //        __HAL_UART_CLEAR_FEFLAG(huart);

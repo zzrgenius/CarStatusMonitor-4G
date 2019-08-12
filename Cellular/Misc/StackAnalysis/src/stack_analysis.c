@@ -35,7 +35,7 @@
 
 /* Private macros ------------------------------------------------------------*/
 #if (USE_TRACE_STACK_ANALYSIS == 1)
-#if (USE_PRINTF == 1U)
+#if (USE_PRINTF == 0U)
 #include "trace_interface.h"
 #define PrintINFO(format, args...) \
 TracePrint(DBG_CHAN_MAIN, DBL_LVL_P0, "SA:" format "\n\r", ## args)

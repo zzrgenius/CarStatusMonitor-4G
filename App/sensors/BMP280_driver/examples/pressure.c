@@ -7,6 +7,7 @@
 #include "sensirion_common.h"
 #include "mpu9250_driver.h"
 #include "stm32f4xx_hal.h"
+#include "os_i2c.h"
 void delay_ms(uint32_t period_ms);
 int8_t i2c_reg_write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length);
 int8_t i2c_reg_read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length);
@@ -122,9 +123,10 @@ void delay_ms(uint32_t period_ms)
  */
 int8_t i2c_reg_write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
 {
-
+	int8_t result;
     /* Implement the I2C write routine according to the target machine. */
-	return  Sensors_I2C_WriteRegister(i2c_addr<<1, reg_addr,length,reg_data );
+	 result = os_I2C_WriteReg(i2c_addr<<1, reg_addr,length,reg_data );
+		return  result;
     //return -1;
 }
  
@@ -145,7 +147,9 @@ int8_t i2c_reg_read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint1
 {
 
     /* Implement the I2C read routine according to the target machine. */
-    return Sensors_I2C_ReadRegister(i2c_addr<<1, reg_addr, length,reg_data) ;
+	int8_t result;
+     result = os_I2C_ReadReg(i2c_addr<<1, reg_addr, length,reg_data) ;
+	return result;
 	 
 }
 /**********

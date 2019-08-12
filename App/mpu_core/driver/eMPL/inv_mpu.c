@@ -41,9 +41,12 @@
 #include "main.h"
 #include "log.h"
 #include "mpu9250_driver.h"
-   
-#define i2c_write   Sensors_I2C_WriteRegister
-#define i2c_read    Sensors_I2C_ReadRegister 
+   #include "os_i2c.h"
+
+//#define i2c_write   Sensors_I2C_WriteRegister
+//#define i2c_read    Sensors_I2C_ReadRegister 
+#define i2c_write 	os_I2C_WriteReg		
+#define i2c_read    os_I2C_ReadReg
 #define delay_ms    mdelay
 #define get_ms      get_tick_count
 #define log_i       MPL_LOGI

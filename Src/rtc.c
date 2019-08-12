@@ -75,7 +75,10 @@ void MX_RTC_Init(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
-
+  /* USER CODE BEGIN RTC_Init 2 */
+	if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2)
+	{
+  /* USER CODE END RTC_Init 2 */
     /**Initialize RTC and set the Time and Date 
     */
   sTime.Hours = 0;
@@ -97,7 +100,29 @@ void MX_RTC_Init(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
-
+  /* USER CODE BEGIN RTC_Init 4 */
+  HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0x32F2);
+  }
+	else
+	{ 
+		
+		/* 检查上电复位标志位是否为：SET */
+		if (__HAL_RCC_GET_FLAG(RCC_FLAG_PORRST) != RESET)
+		{
+			//printf("发生上电复位！！！\n");
+		}
+		/* 检测引脚复位标志位是否为：SET */
+		if (__HAL_RCC_GET_FLAG(RCC_FLAG_PINRST) != RESET)
+		{
+//			//printf("发生外部引脚复位！！！\n");
+//			DateToUpdate.Year  = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR3);
+//			DateToUpdate.Month = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR4);
+//			DateToUpdate.Date  = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR5);
+//			DateToUpdate.WeekDay = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR6);
+//			HAL_RTC_SetDate(&hrtc,&DateToUpdate,RTC_FORMAT_BIN);        //与写入的方式保持一致！main函      数里面写入的是二进制
+		} 
+	}		
+  /* USER CODE END RTC_Init 4 */
 }
 
 void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)

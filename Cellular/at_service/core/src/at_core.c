@@ -96,7 +96,7 @@ static uint16_t count_enable  = 0;
 static uint8_t         AT_Core_initialized = 0U;
 static AT_CHAR_t       build_atcmd[ATCMD_MAX_CMD_SIZE] = {0};
 static IPC_Handle_t    ipcHandleTab[ATCORE_MAX_HANDLES];
-  at_context_t    at_context[ATCORE_MAX_HANDLES];
+static at_context_t    at_context[ATCORE_MAX_HANDLES];
 static urc_callback_t  register_URC_callback[ATCORE_MAX_HANDLES];
 static IPC_RxMessage_t  msgFromIPC[ATCORE_MAX_HANDLES];        /* array of IPC msg (1 per ATCore handler) */
 static __IO uint8_t     MsgReceived[ATCORE_MAX_HANDLES] = {0}; /* array of rx msg counters (1 per ATCore handler) */
@@ -311,7 +311,7 @@ at_status_t AT_reset_context(at_handle_t athandle)
   /* reinit IPC channel and select our channel */
   if (IPC_reset(&ipcHandleTab[athandle]) == IPC_OK)
   {
-    if (IPC_select(&ipcHandleTab[athandle]) == IPC_OK)
+     if (IPC_select(&ipcHandleTab[athandle]) == IPC_OK)
     {
       retval = ATSTATUS_OK;
     }
@@ -379,7 +379,7 @@ at_status_t AT_sendcmd(at_handle_t athandle, at_msg_t msg_in_id, at_buf_t *p_cmd
   if (retval != ATSTATUS_OK)
   {
     PrintDBG("AT_sendcmd error: process request")
-    ATParser_abort_request(&at_context[athandle]);
+     ATParser_abort_request(&at_context[athandle]);
     goto exit_func;
   }
 

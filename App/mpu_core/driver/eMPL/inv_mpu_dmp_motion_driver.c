@@ -23,7 +23,7 @@
 #include "inv_mpu_dmp_motion_driver.h"
 #include "dmpKey.h"
 #include "dmpmap.h"
-
+#include "os_i2c.h"
 /* The following functions must be defined for this platform:
  * i2c_write(unsigned char slave_addr, unsigned char reg_addr,
  *      unsigned char length, unsigned char const *data)
@@ -37,8 +37,10 @@
 #include "main.h"
 #include "mpu9250_driver.h"
    
-#define i2c_write   Sensors_I2C_WriteRegister
-#define i2c_read    Sensors_I2C_ReadRegister
+#define i2c_write 	os_I2C_WriteReg		
+//  Sensors_I2C_WriteRegister
+#define i2c_read    os_I2C_ReadReg      
+//Sensors_I2C_ReadRegister
 #define get_ms      get_tick_count
 
 #elif defined MOTION_DRIVER_TARGET_MSP430

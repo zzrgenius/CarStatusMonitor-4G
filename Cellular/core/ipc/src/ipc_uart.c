@@ -202,6 +202,7 @@ IPC_Status_t IPC_open_uart(IPC_Handle_t *hipc,
 #endif /* IPC_USE_STREAM_MODE */
 
   /* start RX IT */
+  __HAL_UART_CLEAR_FLAG(hipc->Interface.h_uart,UART_FLAG_RXNE);
   uart_status = HAL_UART_Receive_IT(hipc->Interface.h_uart, (uint8_t *)g_IPC_Devices_List[device].RxChar, 1U);
   if (HAL_OK != uart_status)
   {

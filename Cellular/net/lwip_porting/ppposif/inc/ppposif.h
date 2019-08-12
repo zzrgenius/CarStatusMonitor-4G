@@ -28,7 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 
-#include "ppp.h"
+#include "netif/ppp/ppp.h"
 #include "netif/ppp/pppos.h"
 #include "ipc_uart.h"
 #include "plf_config.h"

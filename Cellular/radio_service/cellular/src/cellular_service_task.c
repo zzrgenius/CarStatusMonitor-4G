@@ -490,13 +490,13 @@ static void CST_select_sim(CST_sim_slot_type_t sim_slot)
   {
 
     case CST_SIM_SLOT_MODEM_EMBEDDED_SIM:
-      //HAL_GPIO_WritePin(MDM_SIM_SELECT_0_GPIO_Port, MDM_SIM_SELECT_0_Pin, GPIO_PIN_SET);
-      //HAL_GPIO_WritePin(MDM_SIM_SELECT_1_GPIO_Port, MDM_SIM_SELECT_1_Pin, GPIO_PIN_RESET);
+ //     HAL_GPIO_WritePin(MDM_SIM_SELECT_0_GPIO_Port, MDM_SIM_SELECT_0_Pin, GPIO_PIN_SET);
+  //    HAL_GPIO_WritePin(MDM_SIM_SELECT_1_GPIO_Port, MDM_SIM_SELECT_1_Pin, GPIO_PIN_RESET);
       PrintCellularService("STM32 ESIM SELECTED \r\n")
       break;
 
     case CST_SIM_SLOT_MODEM_SOCKET:
-     // HAL_GPIO_WritePin(MDM_SIM_SELECT_0_GPIO_Port, MDM_SIM_SELECT_0_Pin, GPIO_PIN_RESET);
+    //  HAL_GPIO_WritePin(MDM_SIM_SELECT_0_GPIO_Port, MDM_SIM_SELECT_0_Pin, GPIO_PIN_RESET);
      // HAL_GPIO_WritePin(MDM_SIM_SELECT_1_GPIO_Port, MDM_SIM_SELECT_1_Pin, GPIO_PIN_RESET);
       PrintCellularService("MODEM SIM SOCKET SELECTED \r\n")
       break;
@@ -504,7 +504,7 @@ static void CST_select_sim(CST_sim_slot_type_t sim_slot)
     case CST_SIM_SLOT_STM32_EMBEDDED_SIM:
     default:
     //  HAL_GPIO_WritePin(MDM_SIM_SELECT_0_GPIO_Port, MDM_SIM_SELECT_0_Pin, GPIO_PIN_RESET);
-    //  HAL_GPIO_WritePin(MDM_SIM_SELECT_1_GPIO_Port, MDM_SIM_SELECT_1_Pin, GPIO_PIN_SET);
+      //HAL_GPIO_WritePin(MDM_SIM_SELECT_1_GPIO_Port, MDM_SIM_SELECT_1_Pin, GPIO_PIN_SET);
 
       PrintCellularService("MODEM SIM ESIM SELECTED \r\n")
       break;

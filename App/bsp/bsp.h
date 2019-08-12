@@ -1,6 +1,7 @@
 #ifndef _BSP_H
 #define _BSP_H
 
+#include "i2c.h"
 
 #define I2C_TIMEOUT  100 /*<! Value of Timeout when I2C communication fails */
 
@@ -15,6 +16,7 @@
 #ifndef BSP_I2C_SPEED
  #define BSP_I2C_SPEED                            100000
 #endif /* BSP_I2C_SPEED */
+  void I2Cx_Reset(I2C_HandleTypeDef* i2cHandle);
 
 
 #endif

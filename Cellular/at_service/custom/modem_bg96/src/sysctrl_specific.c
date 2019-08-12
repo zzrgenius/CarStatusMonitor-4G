@@ -112,7 +112,7 @@ sysctrl_status_t SysCtrl_BG96_power_on(sysctrl_device_type_t type)
   /* Re-enale the UART IRQn */
   HAL_NVIC_EnableIRQ(MODEM_UART_IRQn);
 
-//  /* POWER DOWN */
+  /* POWER DOWN */
 //  HAL_GPIO_WritePin(MODEM_PWR_EN_GPIO_Port, MODEM_PWR_EN_Pin, GPIO_PIN_SET);
 //  HAL_GPIO_WritePin(MODEM_RST_GPIO_Port, MODEM_RST_Pin, GPIO_PIN_SET);
 //  HAL_Delay(150U);
@@ -124,18 +124,18 @@ sysctrl_status_t SysCtrl_BG96_power_on(sysctrl_device_type_t type)
 //  HAL_Delay(200U);
 //  HAL_GPIO_WritePin(MODEM_PWR_EN_GPIO_Port, MODEM_PWR_EN_Pin, GPIO_PIN_RESET);
 
-//  /* Waits for Modem complete its booting procedure */
-//  PrintINFO("Waiting %d millisec for modem running...", BG96_BOOT_TIME)
-//  HAL_Delay(BG96_BOOT_TIME);
-//  PrintINFO("...done")
+  /* Waits for Modem complete its booting procedure */
+  PrintINFO("Waiting %d millisec for modem running...", BG96_BOOT_TIME)
+  HAL_Delay(BG96_BOOT_TIME);
+  PrintINFO("...done")
 
-//#if defined(USE_MODEM_BG96)
-//#if defined(HWREF_AKORIOT_BG96)
-//  /* DTR signal not used on this board */
-//#else  /* HWREF_B_CELL_BG96_V2 */
-//  HAL_GPIO_WritePin(MODEM_DTR_GPIO_Port, MODEM_DTR_Pin, GPIO_PIN_SET);
-//#endif
-//#endif /* USE_MODEM_BG96 */
+#if defined(USE_MODEM_BG96)
+#if defined(HWREF_AKORIOT_BG96)
+  /* DTR signal not used on this board */
+#else  /* HWREF_B_CELL_BG96_V2 */
+ // HAL_GPIO_WritePin(MODEM_DTR_GPIO_Port, MODEM_DTR_Pin, GPIO_PIN_SET);
+#endif
+#endif /* USE_MODEM_BG96 */
 
   return (retval);
 }
@@ -154,14 +154,14 @@ sysctrl_status_t SysCtrl_BG96_power_off(sysctrl_device_type_t type)
   * reset GPIO pins to initial state only after completion of previous command (between 2s and 40s)
   */
 
-  HAL_GPIO_WritePin(MODEM_RST_GPIO_Port, MODEM_RST_Pin, GPIO_PIN_SET);
+//  HAL_GPIO_WritePin(MODEM_RST_GPIO_Port, MODEM_RST_Pin, GPIO_PIN_SET);
 //  HAL_GPIO_WritePin(MODEM_PWR_EN_GPIO_Port, MODEM_PWR_EN_Pin, GPIO_PIN_SET);
 
 #if defined(USE_MODEM_BG96)
 #if defined(HWREF_AKORIOT_BG96)
   /* DTR not used on these board */
 #else   /* HWREF_B_CELL_BG96_V2 */
-  HAL_GPIO_WritePin(MODEM_DTR_GPIO_Port, MODEM_DTR_Pin, GPIO_PIN_RESET);
+  //HAL_GPIO_WritePin(MODEM_DTR_GPIO_Port, MODEM_DTR_Pin, GPIO_PIN_RESET);
 #endif
 #endif /* USE_MODEM_BG96 */
 
@@ -188,9 +188,9 @@ sysctrl_status_t SysCtrl_BG96_reset(sysctrl_device_type_t type)
   */
   PrintINFO("!!! Hardware Reset triggered !!!")
 
-  HAL_GPIO_WritePin(MODEM_RST_GPIO_Port, MODEM_RST_Pin, GPIO_PIN_SET);
-  HAL_Delay(150U);
-  HAL_GPIO_WritePin(MODEM_RST_GPIO_Port, MODEM_RST_Pin, GPIO_PIN_RESET);
+//  HAL_GPIO_WritePin(MODEM_RST_GPIO_Port, MODEM_RST_Pin, GPIO_PIN_SET);
+//  HAL_Delay(150U);
+//  HAL_GPIO_WritePin(MODEM_RST_GPIO_Port, MODEM_RST_Pin, GPIO_PIN_RESET);
 
   return (retval);
 }
@@ -203,16 +203,16 @@ static sysctrl_status_t SysCtrl_BG96_setup(void)
   GPIO_InitTypeDef GPIO_InitStruct;
 
   /* GPIO config */
-  HAL_GPIO_WritePin(MODEM_RST_GPIO_Port, MODEM_RST_Pin, GPIO_PIN_SET);
+  //HAL_GPIO_WritePin(MODEM_RST_GPIO_Port, MODEM_RST_Pin, GPIO_PIN_SET);
 //  HAL_GPIO_WritePin(MODEM_PWR_EN_GPIO_Port, MODEM_PWR_EN_Pin, GPIO_PIN_SET);
 
-//#if defined(USE_MODEM_BG96)
-//#if defined(HWREF_AKORIOT_BG96)
-//  /* DTR not used on these board */
-//#else  /* HWREF_B_CELL_BG96_V2 */
-//  HAL_GPIO_WritePin(MODEM_DTR_GPIO_Port, MODEM_DTR_Pin, GPIO_PIN_RESET);
-//#endif
-//#endif /* USE_MODEM_BG96 */
+#if defined(USE_MODEM_BG96)
+#if defined(HWREF_AKORIOT_BG96)
+  /* DTR not used on these board */
+#else  /* HWREF_B_CELL_BG96_V2 */
+ // HAL_GPIO_WritePin(MODEM_DTR_GPIO_Port, MODEM_DTR_Pin, GPIO_PIN_RESET);
+#endif
+#endif /* USE_MODEM_BG96 */
 
   GPIO_InitStruct.Pin = MODEM_RST_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -220,18 +220,23 @@ static sysctrl_status_t SysCtrl_BG96_setup(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(MODEM_RST_GPIO_Port, &GPIO_InitStruct);
 
- 
+#if defined(USE_MODEM_BG96)
+#if defined(HWREF_AKORIOT_BG96)
+  /* DTR not used on these board */
+#else  /* HWREF_B_CELL_BG96_V2 */
   GPIO_InitStruct.Pin = MODEM_DTR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(MODEM_DTR_GPIO_Port, &GPIO_InitStruct);
- 
-//  GPIO_InitStruct.Pin = MODEM_PWR_EN_Pin;
-//  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-//  GPIO_InitStruct.Pull = GPIO_NOPULL;
-//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-//  HAL_GPIO_Init(MODEM_PWR_EN_GPIO_Port, &GPIO_InitStruct);
+#endif
+#endif /* USE_MODEM_BG96 */
+
+  GPIO_InitStruct.Pin = MODEM_PWR_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(MODEM_PWR_EN_GPIO_Port, &GPIO_InitStruct);
 
   /* UART initialization */
   MODEM_UART_HANDLE.Instance = MODEM_UART_INSTANCE;
@@ -243,10 +248,9 @@ static sysctrl_status_t SysCtrl_BG96_setup(void)
   MODEM_UART_HANDLE.Init.HwFlowCtl = MODEM_UART_HWFLOWCTRL;
   MODEM_UART_HANDLE.Init.OverSampling = UART_OVERSAMPLING_16;
  // MODEM_UART_HANDLE.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
- 
 
 #if (MODEM_UART_AUTOBAUD == 0)
- // MODEM_UART_HANDLE.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+//  MODEM_UART_HANDLE.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
 #else
   MODEM_UART_HANDLE.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_AUTOBAUDRATE_INIT;
   MODEM_UART_HANDLE.AdvancedInit.AutoBaudRateEnable = UART_ADVFEATURE_AUTOBAUDRATE_ENABLE;
