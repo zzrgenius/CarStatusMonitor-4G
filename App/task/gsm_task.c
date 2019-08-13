@@ -64,16 +64,6 @@
 #define CST_COUNT_FAIL_MAX (5U)
 
 
-#define CST_POWER_ON_RESET_MAX      5U
-#define CST_RESET_MAX               5U
-#define CST_INIT_MODEM_RESET_MAX    5U
-#define CST_CSQ_MODEM_RESET_MAX     5U
-#define CST_GNS_MODEM_RESET_MAX     5U
-#define CST_ATTACH_RESET_MAX        5U
-#define CST_DEFINE_PDN_RESET_MAX    5U
-#define CST_ACTIVATE_PDN_RESET_MAX  5U
-#define CST_CELLULAR_DATA_RETRY_MAX 5U
-#define CST_GLOBAL_RETRY_MAX        5U
 
 
 extern uint8_t gCS_Send_steps;
@@ -772,22 +762,22 @@ void StartTaskGSM(void const * argument)
 			break;
         case CST_MODEM_DATA_READY_STATE:
         {
-          PrintCellularService("-----> State : CST_MODEM_DATA_READY_STATE <-----\n\r")
-			if( osCDS_socket_send(( const uint8_t *)testsendbuf,strlen(testsendbuf))== CELLULAR_OK)
-			{
-				__nop();
-				cst_context.cellular_data_retry_count = 0;
-			}
-			else
-			{
-				cst_context.cellular_data_retry_count++;
-				
-			}
-			if(cst_context.cellular_data_retry_count > CST_GLOBAL_RETRY_MAX)
-			{
-				cst_context.current_state = CST_MODEM_REGISTERED_STATE;
-				cst_context.cellular_data_retry_count = 0;
-			}
+//          PrintCellularService("-----> State : CST_MODEM_DATA_READY_STATE <-----\n\r")
+//			if( osCDS_socket_send(( const uint8_t *)testsendbuf,strlen(testsendbuf))== CELLULAR_OK)
+//			{
+//				__nop();
+//				cst_context.cellular_data_retry_count = 0;
+//			}
+//			else
+//			{
+//				cst_context.cellular_data_retry_count++;
+//				
+//			}
+//			if(cst_context.cellular_data_retry_count > CST_GLOBAL_RETRY_MAX)
+//			{
+//				cst_context.current_state = CST_MODEM_REGISTERED_STATE;
+//				cst_context.cellular_data_retry_count = 0;
+//			}
 
           CST_data_ready_state();
           break;
@@ -887,7 +877,7 @@ void StartTaskGSM(void const * argument)
 		***/
 		osprintf("current_state_test is %d\r\n",current_state_test);
 		#endif
-		osDelay(10000);
+		osDelay(5000);
 		
 	}
 }

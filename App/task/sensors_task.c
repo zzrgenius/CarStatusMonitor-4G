@@ -11,6 +11,8 @@
 #include "eMPL_outputs.h"
 #include "time.h"
 #include "nmea.h"
+#include "sim_service.h"
+#include "sim_service_os.h"
 
 extern uint16_t opt3001_manufacturer_id(void);
 extern uint16_t opt3001_device_id(void);
@@ -43,6 +45,8 @@ typedef struct    {
 Sensors_output_t sensors_upload;
  
 extern nmeaINFO info;
+extern CST_context_t     cst_context ;
+static uint8_t cellular_data_retry_count = 0;
 ///*********int bmp280_test(void)
 //{
 
@@ -208,8 +212,26 @@ void StartTaskSensorsGet( void *pvParameters )
 //		  eMPL_send_data(PACKET_DATA_ACCEL, data);
 	  }
 	   GetGpsInf();
-	  osprintf("utc time is %d:%d:%d\r\n", sensors_upload.gpsinf.utc.hour,sensors_upload.gpsinf.utc.min,sensors_upload.gpsinf.utc.sec );
+		osprintf("utc time is %d:%d:%d\r\n", sensors_upload.gpsinf.utc.hour,sensors_upload.gpsinf.utc.min,sensors_upload.gpsinf.utc.sec );
 
+	   if (CST_get_state() == CST_MODEM_DATA_READY_STATE)
+		{
+			if( osCDS_socket_send(( const uint8_t *)&sensors_upload,sizeof(Sensors_output_t))== CELLULAR_OK)
+			{
+				__nop();
+				 cellular_data_retry_count = 0;
+			}
+			else
+			{
+				cellular_data_retry_count++;
+				
+			}
+			if( cellular_data_retry_count > CST_GLOBAL_RETRY_MAX)
+			{
+				cst_context.current_state = CST_MODEM_REGISTERED_STATE;
+				cellular_data_retry_count = 0;
+			}
+		}
 
 		//opt_res = opt3001_get_lux();
 	//	printf("opt_res is %d",opt_res);

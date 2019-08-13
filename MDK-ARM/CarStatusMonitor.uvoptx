@@ -120,7 +120,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>燩Nw</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -157,98 +156,226 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>480</LineNumber>
+          <LineNumber>485</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134265568</Address>
+          <Address>134245202</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\App\task\mpu_task.c</Filename>
+          <Filename>..\App\sim7600\sim_service.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\CarStatusMonitor\../App/task/mpu_task.c\480</Expression>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service.c\485</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>563</LineNumber>
+          <LineNumber>449</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134265862</Address>
+          <Address>134245518</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\App\task\mpu_task.c</Filename>
+          <Filename>..\App\sim7600\sim_service.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\CarStatusMonitor\../App/task/mpu_task.c\563</Expression>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service.c\449</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>527</LineNumber>
+          <LineNumber>725</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134265756</Address>
+          <Address>134272386</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\App\task\mpu_task.c</Filename>
+          <Filename>..\App\task\gsm_task.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\CarStatusMonitor\../App/task/mpu_task.c\527</Expression>
+          <Expression>\\CarStatusMonitor\../App/task/gsm_task.c\725</Expression>
         </Bp>
         <Bp>
           <Number>3</Number>
           <Type>0</Type>
-          <LineNumber>523</LineNumber>
+          <LineNumber>250</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134265732</Address>
+          <Address>134306484</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\App\task\mpu_task.c</Filename>
+          <Filename>..\App\sim7600\sim_service_os.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\CarStatusMonitor\../App/task/mpu_task.c\523</Expression>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service_os.c\250</Expression>
         </Bp>
         <Bp>
           <Number>4</Number>
           <Type>0</Type>
-          <LineNumber>509</LineNumber>
+          <LineNumber>1009</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134265660</Address>
+          <Address>134247524</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\App\task\mpu_task.c</Filename>
+          <Filename>..\App\sim7600\sim_service.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\CarStatusMonitor\../App/task/mpu_task.c\509</Expression>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service.c\1009</Expression>
         </Bp>
         <Bp>
           <Number>5</Number>
           <Type>0</Type>
-          <LineNumber>543</LineNumber>
+          <LineNumber>956</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134265762</Address>
+          <Address>134247398</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\App\task\mpu_task.c</Filename>
+          <Filename>..\App\sim7600\sim_service.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\CarStatusMonitor\../App/task/mpu_task.c\543</Expression>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service.c\956</Expression>
+        </Bp>
+        <Bp>
+          <Number>6</Number>
+          <Type>0</Type>
+          <LineNumber>969</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134247442</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\App\sim7600\sim_service.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service.c\969</Expression>
+        </Bp>
+        <Bp>
+          <Number>7</Number>
+          <Type>0</Type>
+          <LineNumber>961</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134247430</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\App\sim7600\sim_service.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service.c\961</Expression>
+        </Bp>
+        <Bp>
+          <Number>8</Number>
+          <Type>0</Type>
+          <LineNumber>974</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134247474</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\App\sim7600\sim_service.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service.c\974</Expression>
+        </Bp>
+        <Bp>
+          <Number>9</Number>
+          <Type>0</Type>
+          <LineNumber>987</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134247506</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\App\sim7600\sim_service.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service.c\987</Expression>
+        </Bp>
+        <Bp>
+          <Number>10</Number>
+          <Type>0</Type>
+          <LineNumber>301</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134243284</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\App\sim7600\sim_custom.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_custom.c\301</Expression>
+        </Bp>
+        <Bp>
+          <Number>11</Number>
+          <Type>0</Type>
+          <LineNumber>309</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134243294</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\App\sim7600\sim_custom.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_custom.c\309</Expression>
+        </Bp>
+        <Bp>
+          <Number>12</Number>
+          <Type>0</Type>
+          <LineNumber>313</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134243298</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\App\sim7600\sim_custom.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_custom.c\313</Expression>
+        </Bp>
+        <Bp>
+          <Number>13</Number>
+          <Type>0</Type>
+          <LineNumber>253</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134306498</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\App\sim7600\sim_service_os.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\CarStatusMonitor\../App/sim7600/sim_service_os.c\253</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -345,7 +472,12 @@
         <Ww>
           <count>18</count>
           <WinNumber>1</WinNumber>
-          <ItemText>hal</ItemText>
+          <ItemText>cmd_buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>19</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>p_atp_ctxt</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -360,10 +492,18 @@
         <Mm>
           <WinNumber>2</WinNumber>
           <SubType>8</SubType>
-          <ItemText>pstr</ItemText>
+          <ItemText>rsp_buf</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow2>
+      <MemoryWindow3>
+        <Mm>
+          <WinNumber>3</WinNumber>
+          <SubType>8</SubType>
+          <ItemText>build_atcmd</ItemText>
+          <AccSizeX>0</AccSizeX>
+        </Mm>
+      </MemoryWindow3>
       <Tracepoint>
         <THDelay>0</THDelay>
       </Tracepoint>
@@ -1356,7 +1496,7 @@
 
   <Group>
     <GroupName>MPU</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1676,7 +1816,7 @@
 
   <Group>
     <GroupName>Common</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

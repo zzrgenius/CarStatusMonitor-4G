@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "sim_service.h"
+#include "sim_service_os.h"
 #define USE_TRACE_ATCORE 1
 /* Private macros ------------------------------------------------------------*/
 #if (USE_TRACE_ATCORE == 1U)
@@ -330,7 +331,7 @@ static at_status_t process_AT_transaction( uint16_t msg_in_id, uint8_t *p_rsp_bu
 
   /* reset at cmd buffer */
   memset((void *) build_atcmd, 0, ATCMD_MAX_CMD_SIZE);
-
+  
   do
   {
     memset((void *)&build_atcmd[0], 0, sizeof(char) * ATCMD_MAX_CMD_SIZE);
@@ -531,7 +532,7 @@ at_status_t AT_sendcmd(   uint16_t msg_in_id, uint8_t *p_cmd_in_buf, uint8_t *p_
 
   /* initialize response buffer */
   memset((void *)p_rsp_buf, 0, ATCMD_MAX_BUF_SIZE);
-
+//  memset(msgFromIPC.buffer, 0,RXBUF_MAXSIZE);
   /* start to process this command */
   at_context_sim.processing_cmd = 1U;
 
@@ -574,7 +575,7 @@ at_status_t AT_sendcmd(   uint16_t msg_in_id, uint8_t *p_cmd_in_buf, uint8_t *p_
 	
   /* get command response buffer */
 //  ATParser_get_rsp(&at_context_sim, p_rsp_buf);
-	memcpy(p_rsp_buf, msgFromIPC.buffer,ATCMD_MAX_BUF_SIZE);
+	memcpy(p_rsp_buf, msgFromIPC.buffer,ATCMD_MAX_BUF_SIZE);     
 exit_func:
   /* finished to process this command */
   at_context_sim.processing_cmd = 0U;

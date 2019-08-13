@@ -833,6 +833,10 @@ CS_Status_t CDS_socket_send( const uint8_t *p_buf, uint32_t length)
     PrintErr("<Cellular_Service> buffer size %d exceed maximum value %d",   length,    DEFAULT_IP_MAX_PACKET_SIZE)
     return (CELLULAR_ERROR);
   }
+  if( p_buf == NULL)
+  {
+	  return (CELLULAR_ERROR);
+  }
 
   /* check that socket has been allocated */
   if (cs_ctxt_sockets_info.state != SOCKETSTATE_CONNECTED)
@@ -848,6 +852,7 @@ CS_Status_t CDS_socket_send( const uint8_t *p_buf, uint32_t length)
     err = AT_sendcmd( SID_CS_SEND_DATA, &cmd_buf[0], &rsp_buf[0]);
     if (err == ATSTATUS_OK)
     {
+		HAL_Delay(100);
 		if(strstr((char*)rsp_buf,">") != NULL)
 		{
 			    SIM_send_uart((uint8_t *)&send_data_struct.p_buffer_addr_send[0], length);

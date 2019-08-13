@@ -41,6 +41,18 @@ typedef int socket_handle_t;
 #define CST_PDN_ACTIVATE_RETRY_DELAY 30000U
 #define CST_NETWORK_STATUS_DELAY     25000U
 
+
+#define CST_POWER_ON_RESET_MAX      5U
+#define CST_RESET_MAX               5U
+#define CST_INIT_MODEM_RESET_MAX    5U
+#define CST_CSQ_MODEM_RESET_MAX     5U
+#define CST_GNS_MODEM_RESET_MAX     5U
+#define CST_ATTACH_RESET_MAX        5U
+#define CST_DEFINE_PDN_RESET_MAX    5U
+#define CST_ACTIVATE_PDN_RESET_MAX  5U
+#define CST_CELLULAR_DATA_RETRY_MAX 5U
+#define CST_GLOBAL_RETRY_MAX        5U
+
 typedef struct
 {
   uint32_t  active;
@@ -101,6 +113,8 @@ CS_Status_t osCDS_activate_pdn(uint8_t cid);
 
 CS_Status_t osCDS_suspend_data(void);
 CS_Status_t osCDS_resume_data(void);
+CST_state_t CST_get_state(void);
+
 
 //CS_Status_t osCDS_dns_request(uint8_t cid, CS_DnsReq_t  *dns_req, CS_DnsResp_t *dns_resp);
 

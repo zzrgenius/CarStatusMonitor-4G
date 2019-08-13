@@ -162,8 +162,8 @@ void MX_FREERTOS_Init(void) {
   uSDThreadHandle = osThreadCreate(osThread(uSDThread), NULL);
 
   /* definition and creation of myTaskGSM */
-//  osThreadDef(myTaskGSM, StartTaskGSM, osPriorityNormal, 0, 1024);
-//  myTaskGSMHandle = osThreadCreate(osThread(myTaskGSM), NULL);
+  osThreadDef(myTaskGSM, StartTaskGSM, osPriorityNormal, 0, 1024);
+  myTaskGSMHandle = osThreadCreate(osThread(myTaskGSM), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
