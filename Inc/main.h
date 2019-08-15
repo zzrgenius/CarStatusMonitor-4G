@@ -60,6 +60,10 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define Camera_RST_Pin GPIO_PIN_2
+#define Camera_RST_GPIO_Port GPIOE
+#define Camera_PWDN_Pin GPIO_PIN_3
+#define Camera_PWDN_GPIO_Port GPIOE
 #define SD_DETECT_Pin GPIO_PIN_13
 #define SD_DETECT_GPIO_Port GPIOC
 #define USER_BUTTON_Pin GPIO_PIN_0

@@ -83,7 +83,7 @@ typedef enum
 /** @defgroup STM324xG_EVAL_CAMERA_Exported_Constants STM324xG EVAL CAMERA Exported Constants
   * @{
   */
-#define CAMERA_I2C_ADDRESS 0x60  
+//#define CAMERA_I2C_ADDRESS 0x60  
 /**
   * @}
   */  
@@ -112,7 +112,7 @@ void    BSP_CAMERA_ColorEffectConfig(uint32_t Effect);
 void    BSP_CAMERA_IRQHandler(void);
 /* To be called in DMA2_Stream1_IRQHandler function */
 void    BSP_CAMERA_DMA_IRQHandler(void);
-
+  uint32_t GetSize(uint32_t resolution);
 /**
   * @}
   */ 

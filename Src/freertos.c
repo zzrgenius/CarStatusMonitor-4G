@@ -86,6 +86,7 @@ osThreadId myTaskMPUHandle;
 osThreadId myTaskSensorsHandle;
 osThreadId uSDThreadHandle;
 osThreadId myTaskGSMHandle;
+osThreadId myTaskCameraHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -98,6 +99,7 @@ extern void StartTaskMPU(void const * argument);
 extern void StartTaskSensorsGet(void const * argument);
 extern void StartTaskSD(void const * argument);
 extern void StartTaskGSM(void const * argument);
+extern void StartTaskCamera(void const * argument);
 
 extern void MX_FATFS_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -150,11 +152,11 @@ void MX_FREERTOS_Init(void) {
   myTaskGPSHandle = osThreadCreate(osThread(myTaskGPS), NULL);
 
   /* definition and creation of myTaskMPU */
-  osThreadDef(myTaskMPU, StartTaskMPU,  osPriorityBelowNormal, 0, 1024);
+  osThreadDef(myTaskMPU, StartTaskMPU, osPriorityAboveNormal, 0, 1024);
   myTaskMPUHandle = osThreadCreate(osThread(myTaskMPU), NULL);
 
   /* definition and creation of myTaskSensors */
-  osThreadDef(myTaskSensors, StartTaskSensorsGet, osPriorityAboveNormal, 0, 256);
+  osThreadDef(myTaskSensors, StartTaskSensorsGet, osPriorityNormal, 0, 512);
   myTaskSensorsHandle = osThreadCreate(osThread(myTaskSensors), NULL);
 
   /* definition and creation of uSDThread */
@@ -164,6 +166,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of myTaskGSM */
   osThreadDef(myTaskGSM, StartTaskGSM, osPriorityNormal, 0, 1024);
   myTaskGSMHandle = osThreadCreate(osThread(myTaskGSM), NULL);
+
+  /* definition and creation of myTaskCamera */
+//  osThreadDef(myTaskCamera, StartTaskCamera, osPriorityBelowNormal, 0, 1024);
+//  myTaskCameraHandle = osThreadCreate(osThread(myTaskCamera), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

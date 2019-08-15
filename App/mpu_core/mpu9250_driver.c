@@ -81,7 +81,7 @@ static uint8_t I2C_EXPBD_ReadData( uint8_t Addr, uint16_t Reg,  uint16_t Size,ui
 
   HAL_StatusTypeDef status = HAL_OK;
 
- status = HAL_I2C_Mem_Read( &I2C_EXPBD_Handle, Addr, ( uint16_t )Reg, I2C_MEMADD_SIZE_8BIT, pBuffer, Size,                             I2C_EXPBD_Timeout );
+ status = HAL_I2C_Mem_Read( &I2C_EXPBD_Handle, Addr, ( uint16_t )Reg, I2C_MEMADD_SIZE_8BIT, pBuffer, Size,  I2C_EXPBD_Timeout );
 
 
   /* Check the communication status */

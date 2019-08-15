@@ -64,6 +64,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "ov2640_camera.h"   
    #include "stm32f4xx_hal.h" 
+   #include "bsp.h"
 /** @addtogroup BSP
   * @{
   */
@@ -97,17 +98,41 @@ static uint32_t GetSize(uint32_t resolution);
 /** @defgroup STM324xG_EVAL_CAMERA_Private_Functions STM324xG EVAL CAMERA Private Functions
   * @{
   */ 
+  void camera_power_reset(void)
+{
+	
+ 
+	/*PWDN*/
+ 
+	  HAL_GPIO_WritePin(GPIOE, Camera_PWDN_Pin, GPIO_PIN_RESET); //POWER ON
 
+	HAL_Delay(10);;
+	/* reset */
+	HAL_GPIO_WritePin(GPIOE, Camera_RST_Pin, GPIO_PIN_RESET); //复位OV2640
+	HAL_Delay(10);
+	HAL_GPIO_WritePin(GPIOE, Camera_RST_Pin, GPIO_PIN_SET); //结束复位 
+}
 /**
   * @brief  Initializes the Camera.
   * @param  Resolution: Camera resolution
   * @retval Camera status
-  */
+  HAL_DCMI_Init(&DCMI_Handler);                           //初始化DCMI
+
+//	//关闭所有中断，函数HAL_DCMI_Init()会默认打开很多中断，开启这些中断
+//	//以后我们就需要对这些中断做相应的处理，否则的话就会导致各种各样的问题，
+//	//但是这些中断很多都不需要，所以这里将其全部关闭掉，也就是将IER寄存器清零。
+//	//关闭完所有中断以后再根据自己的实际需求来使能相应的中断。
+//	DCMI->IER=0x0;										
+//	
+//	__HAL_DCMI_ENABLE_IT(&DCMI_Handler,DCMI_IT_FRAME);		//开启帧中断
+//	__HAL_DCMI_ENABLE(&DCMI_Handler);						//使能DCMI
+//	
+//	*/
 uint8_t BSP_CAMERA_Init(uint32_t Resolution)
 { 
   DCMI_HandleTypeDef *phdcmi;
   uint8_t ret = CAMERA_ERROR;
-  
+  camera_power_reset();
   /* Get the DCMI handle structure */
   phdcmi = &hdcmi_eval;
   
@@ -127,6 +152,7 @@ uint8_t BSP_CAMERA_Init(uint32_t Resolution)
   
   if(ov2640_drv.ReadID(CAMERA_I2C_ADDRESS) == OV2640_ID)
   {
+	  printf("ov2640 read id ok!\r\n");
     /* Initialize the Camera driver structure */
     camera_drv = &ov2640_drv;     
     
@@ -281,7 +307,7 @@ void BSP_CAMERA_DMA_IRQHandler(void)
   * @param  resolution: the current resolution.
   * @retval cpature size
   */
-static uint32_t GetSize(uint32_t resolution)
+  uint32_t GetSize(uint32_t resolution)
 { 
   uint32_t size = 0;
   
@@ -313,7 +339,7 @@ static uint32_t GetSize(uint32_t resolution)
 __weak void BSP_CAMERA_MspInit(void)
 {  
   static DMA_HandleTypeDef hdma;
-  GPIO_InitTypeDef GPIO_Init_Structure;  
+  GPIO_InitTypeDef GPIO_InitStruct;  
   DCMI_HandleTypeDef *hdcmi = &hdcmi_eval;
   
   /*** Enable peripherals and GPIO clocks ***/
@@ -330,29 +356,47 @@ __weak void BSP_CAMERA_MspInit(void)
   
   /*** Configure the GPIO ***/
   /* Configure DCMI GPIO as alternate function */
-  GPIO_Init_Structure.Pin       = GPIO_PIN_6; 
-  GPIO_Init_Structure.Mode      = GPIO_MODE_AF_PP;
-  GPIO_Init_Structure.Pull      = GPIO_PULLUP;
-  GPIO_Init_Structure.Speed     = GPIO_SPEED_HIGH;
-  GPIO_Init_Structure.Alternate = GPIO_AF13_DCMI;  
-  HAL_GPIO_Init(GPIOA, &GPIO_Init_Structure);
+ /**DCMI GPIO Configuration    
+    PE4     ------> DCMI_D4
+    PE5     ------> DCMI_D6
+    PE6     ------> DCMI_D7
+    PA4     ------> DCMI_HSYNC
+    PA6     ------> DCMI_PIXCK
+    PC6     ------> DCMI_D0
+    PC7     ------> DCMI_D1
+    PB6     ------> DCMI_D5
+    PB7     ------> DCMI_VSYNC
+    PE0     ------> DCMI_D2
+    PE1     ------> DCMI_D3 
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_0 
+                          |GPIO_PIN_1;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF13_DCMI;
+    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  GPIO_Init_Structure.Pin       = GPIO_PIN_8  | GPIO_PIN_9  | GPIO_PIN_10 |\
-                                  GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_14; 
-  GPIO_Init_Structure.Mode      = GPIO_MODE_AF_PP;
-  GPIO_Init_Structure.Pull      = GPIO_PULLUP;
-  GPIO_Init_Structure.Speed     = GPIO_SPEED_HIGH;
-  GPIO_Init_Structure.Alternate = GPIO_AF13_DCMI;   
-  HAL_GPIO_Init(GPIOH, &GPIO_Init_Structure);
+    GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_6;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF13_DCMI;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  GPIO_Init_Structure.Pin       = GPIO_PIN_4 | GPIO_PIN_5  | GPIO_PIN_6  |\
-                                  GPIO_PIN_7; 
-  GPIO_Init_Structure.Mode      = GPIO_MODE_AF_PP;
-  GPIO_Init_Structure.Pull      = GPIO_PULLUP;
-  GPIO_Init_Structure.Speed     = GPIO_SPEED_HIGH;
-  GPIO_Init_Structure.Alternate = GPIO_AF13_DCMI;   
-  HAL_GPIO_Init(GPIOI, &GPIO_Init_Structure);  
-  
+    GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF13_DCMI;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF13_DCMI;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
   /*** Configure the DMA streams ***/
   /* Configure the DMA handler for Transmission process */
   hdma.Init.Channel             = DMA_CHANNEL_1;

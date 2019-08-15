@@ -3,15 +3,65 @@
 #include "bsp.h"
 
  
-#define EVAL_I2Cx       I2C1
+ 
 #define  heval_I2c		hi2c1
 #define IIC2_SCLH  	 	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET)	 
 #define IIC2_SCLL	 	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_RESET)	 
 #define IIC2_SDAH  	 	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_11,GPIO_PIN_SET)	 
 #define IIC2_SDAL	 	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_11,GPIO_PIN_RESET)	 
  
+ #define EVAL_I2Cx                            I2C1
+#define EVAL_I2Cx_CLK_ENABLE()               __HAL_RCC_I2C1_CLK_ENABLE()
+#define EVAL_DMAx_CLK_ENABLE()               __HAL_RCC_DMA1_CLK_ENABLE()
+#define EVAL_I2Cx_SCL_SDA_GPIO_CLK_ENABLE()  __HAL_RCC_GPIOB_CLK_ENABLE()
+
+#define EVAL_I2Cx_FORCE_RESET()              __HAL_RCC_I2C1_FORCE_RESET()
+#define EVAL_I2Cx_RELEASE_RESET()            __HAL_RCC_I2C1_RELEASE_RESET()
+/* I2C interrupt requests */                  
+#define EVAL_I2Cx_EV_IRQn                    I2C1_EV_IRQn
+#define EVAL_I2Cx_ER_IRQn                    I2C1_ER_IRQn
+
+/****
  
- 
+********/
+ static void I2Cx_MspInit(void)
+{
+  GPIO_InitTypeDef  GPIO_InitStruct;  
+  
+  /*** Configure the GPIOs ***/
+  /* Enable GPIO clock */
+  EVAL_I2Cx_SCL_SDA_GPIO_CLK_ENABLE();
+  
+  /* Configure I2C Tx as alternate function */
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+  GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  
+  /* Configure I2C Rx as alternate function */
+  GPIO_InitStruct.Pin = GPIO_PIN_9;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  
+  /*** Configure the I2C peripheral ***/ 
+  /* Enable I2C clock */
+  EVAL_I2Cx_CLK_ENABLE();
+  
+  /* Force the I2C peripheral clock reset */
+  EVAL_I2Cx_FORCE_RESET(); 
+  
+  /* Release the I2C peripheral clock reset */
+  EVAL_I2Cx_RELEASE_RESET(); 
+  
+  /* Set priority and enable I2Cx event Interrupt */
+  HAL_NVIC_SetPriority(EVAL_I2Cx_EV_IRQn, 0x0F, 0);
+  HAL_NVIC_EnableIRQ(EVAL_I2Cx_EV_IRQn);
+  
+  /* Set priority and enable I2Cx error Interrupt */
+  HAL_NVIC_SetPriority(EVAL_I2Cx_ER_IRQn, 0x0F, 0);
+  HAL_NVIC_EnableIRQ(EVAL_I2Cx_ER_IRQn);
+}
 static void I2Cx_Init(void)
 {
 //  if(HAL_I2C_GetState(&heval_I2c) == HAL_I2C_STATE_RESET)
@@ -30,7 +80,23 @@ static void I2Cx_Init(void)
 //    I2Cx_MspInit();
 //    HAL_I2C_Init(&heval_I2c);
 //  }
-	MX_I2C1_Init();
+if(HAL_I2C_GetState(&heval_I2c) == HAL_I2C_STATE_RESET)
+  {
+    heval_I2c.Instance = EVAL_I2Cx;
+    heval_I2c.Init.ClockSpeed      = BSP_I2C_SPEED;
+    heval_I2c.Init.DutyCycle       = I2C_DUTYCYCLE_2;
+    heval_I2c.Init.OwnAddress1     = 0;
+    heval_I2c.Init.AddressingMode  = I2C_ADDRESSINGMODE_7BIT;
+    heval_I2c.Init.DualAddressMode = I2C_DUALADDRESS_DISABLED;
+    heval_I2c.Init.OwnAddress2     = 0;
+    heval_I2c.Init.GeneralCallMode = I2C_GENERALCALL_DISABLED;
+    heval_I2c.Init.NoStretchMode   = I2C_NOSTRETCH_DISABLED;  
+
+    /* Init the I2C */
+    I2Cx_MspInit();
+    HAL_I2C_Init(&heval_I2c);
+  }
+//	MX_I2C1_Init();
 }
 /**********
 void IIC_Send_Byte(u8 txd)

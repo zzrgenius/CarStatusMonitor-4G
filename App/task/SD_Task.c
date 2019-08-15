@@ -13,10 +13,15 @@
 #include "fatfs.h"
 #include "bsp_led.h"
 #include "osprintf.h"
+#include "msg.h"
+
+
+#define SD_STORAGE_BUF_SIZE  512
+
 FIL MyFile;     /* File object */
 extern char SDPath[4]; /* SD card logical drive path */
 static uint8_t buffer[_MAX_SS]; /* a work buffer for the f_mkfs() */
-
+QueueHandle_t g_SDDataStoreQueue; 
 
 /**
   * @brief  Start task
@@ -29,9 +34,27 @@ static uint8_t buffer[_MAX_SS]; /* a work buffer for the f_mkfs() */
   uint32_t byteswritten, bytesread;                     /* File write/read counts */
   uint8_t wtext[] = "This is STM32 working with FatFs"; /* File write buffer */
   uint8_t rtext[100];                                   /* File read buffer */
-  
+	sd_t sd_buf;
+  	 g_SDDataStoreQueue = xQueueCreate(1,sizeof(sd_t)); 
+	if(g_SDDataStoreQueue == NULL)
+	{
+		__nop();
+	}
   /*##-1- Link the micro SD disk I/O driver ##################################*/
 //	MX_FATFS_Init();
+  if(FATFS_LinkDriver(&SD_Driver, SDPath) == 0)
+  { 
+    /*##-2- Register the file system object to the FatFs module ##############*/
+    if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) != FR_OK)
+    {
+      /* FatFs Initialization Error */
+      Error_Handler();
+    }
+    else
+    {
+		__nop();
+	}
+ }
 	#if 0
   if(FATFS_LinkDriver(&SD_Driver, SDPath) == 0)
   { 
@@ -121,6 +144,36 @@ static uint8_t buffer[_MAX_SS]; /* a work buffer for the f_mkfs() */
   /* Infinite Loop */
   for( ;; )
   {
+
+		if( xQueueReceive( g_SDDataStoreQueue, (& sd_buf ), ( TickType_t ) 100 ) )
+		{
+			if((sd_buf.length != 0) && (sd_buf.length < _MAX_SS))
+			{
+				if(f_open(&MyFile,sd_buf.filename ,    FA_OPEN_APPEND | FA_WRITE | FA_READ) != FR_OK)  //sd_buf.filename
+				{
+					/* 'STM32.TXT' file Open for write Error */
+					//Error_Handler();
+					__nop();
+				}
+				else
+				{
+					/*##-5- Write data to the text file ################################*/
+					res = f_write(&MyFile, sd_buf.filebuf, sd_buf.length, (void *)&byteswritten);
+					if((byteswritten == 0) || (res != FR_OK))
+					{
+						/* 'STM32.TXT' file Write or EOF Error */
+						__nop();
+						Error_Handler();
+					}
+					else
+					{
+						f_close(&MyFile);
+						osprintf("write bytes is %d\r\n",byteswritten);
+					}
+				}
+          
+			}
+		}
 	  vTaskDelay(1000);
   }
 }

@@ -431,6 +431,7 @@ void StartTaskMPU(void const * argument)
     {
         /* There was insufficient FreeRTOS heap available for the semaphore to
         be created successfully. */
+		__nop();
     }
     else
     {
@@ -441,7 +442,7 @@ void StartTaskMPU(void const * argument)
 	#endif
 	//	run_self_test();
 
-	        setup_gyro();
+	      //  setup_gyro();
 	 //HAL_NVIC_SetPriority(EXTI15_10_IRQn, 6, 0);
 	HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
  				int8_t accuracy;

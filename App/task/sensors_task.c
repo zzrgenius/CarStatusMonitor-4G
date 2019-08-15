@@ -13,7 +13,7 @@
 #include "nmea.h"
 #include "sim_service.h"
 #include "sim_service_os.h"
-
+#include "msg.h"
 extern uint16_t opt3001_manufacturer_id(void);
 extern uint16_t opt3001_device_id(void);
 extern uint8_t opt3001_get_lux(void);
@@ -46,6 +46,8 @@ Sensors_output_t sensors_upload;
  
 extern nmeaINFO info;
 extern CST_context_t     cst_context ;
+extern  QueueHandle_t g_SDDataStoreQueue; 
+
 static uint8_t cellular_data_retry_count = 0;
 ///*********int bmp280_test(void)
 //{
@@ -80,7 +82,7 @@ void StartTaskSensorsGet( void *pvParameters )
 	int8_t accuracy;
     unsigned long timestamp;
 	  long msg, data[9];
-    
+    sd_t databuf_sd;
     float float_data[3] = {0};
 
     struct bmp280_config conf;
@@ -232,7 +234,16 @@ void StartTaskSensorsGet( void *pvParameters )
 				cellular_data_retry_count = 0;
 			}
 		}
-
+		memset((uint8_t*)&databuf_sd,0,sizeof(databuf_sd));
+		databuf_sd.type = 1;
+		if(sensors_upload.gpsinf.utc.year )
+		{
+			sprintf(databuf_sd.filename,"%2d%2d%2d",(sensors_upload.gpsinf.utc.year % 100),sensors_upload.gpsinf.utc.mon,sensors_upload.gpsinf.utc.day);
+			sprintf(databuf_sd.filebuf,"utc time is %2d:%2d:%2d gps Latitude is %f Longitude is %f\r\n", sensors_upload.gpsinf.utc.hour,sensors_upload.gpsinf.utc.min,sensors_upload.gpsinf.utc.sec,sensors_upload.gpsinf.lat,sensors_upload.gpsinf.lon );
+			databuf_sd.length = strlen(databuf_sd.filebuf);
+			if( g_SDDataStoreQueue != NULL)
+				xQueueSend(g_SDDataStoreQueue,( void* )&databuf_sd,10);
+		}
 		//opt_res = opt3001_get_lux();
 	//	printf("opt_res is %d",opt_res);
 		LED_Toggle(LED4); 
